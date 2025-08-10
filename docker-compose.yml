@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  app:
+    image: maven:3.8.7-openjdk-17
+    container_name: springboot-dev
+    working_dir: /app
+    volumes:
+      - ./backend/:/app      # Mount source code into container
+      - ~/.m2:/root/.m2  # Cache maven deps between container runs
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
