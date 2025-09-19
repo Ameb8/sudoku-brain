@@ -118,8 +118,7 @@ Makefile~
 
 # Logs and databases
 *.log
-*.sql
-*.sqlite
+
 
 # Temporary files
 tmp/
