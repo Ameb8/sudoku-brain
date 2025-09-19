@@ -13,6 +13,7 @@ int gets_puzzle(int board[9][9], int num_clues) {
 int main(int argc, char *argv[]) {
     if(argc != 3) {
         printf("Number of puzzles to generate and number of clues each must be provided as arguments\n");
+        
         return -1;
     }
 
@@ -21,6 +22,7 @@ int main(int argc, char *argv[]) {
 
     if(num_puzzles < 1 || num_clues < 17 || num_clues > 80) {
         printf("Arguments are invalid. Please try again\n");
+
         return -1;
     }
 
