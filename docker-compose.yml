@@ -40,3 +40,4 @@ services:
       - ./db_init:/docker-entrypoint-initdb.d
 volumes:
   mysql_data:
+

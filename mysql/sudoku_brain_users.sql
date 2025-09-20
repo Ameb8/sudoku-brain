@@ -25,14 +25,14 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `username` varchar(20) NOT NULL,
-  `f_name` varchar(45) NOT NULL,
-  `l_name` varchar(45) NOT NULL,
-  `password` varchar(30) NOT NULL,
-  `email` varchar(55) DEFAULT NULL,
-  `user_id` varchar(45) NOT NULL,
-  UNIQUE KEY `user_id_UNIQUE` (`username`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
+  `user_id` BIGINT NOT NULL AUTO_INCREMENT,
+  `auth_provider` VARCHAR(50) NOT NULL,
+  `auth_id` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) UNIQUE,
+  `username` VARCHAR(50) UNIQUE NOT NULL,
+  `profile_picture` VARCHAR(255),
+  `created_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
