@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < num_puzzles; i++) {
         int board[9][9];
         gets_puzzle(board, num_clues);
+        print_board(board);
         upload_puzzle(board);
     }
 }

@@ -1,10 +1,9 @@
-
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import "./Home.css";
 import LoginButton from "../components/LoginButton.jsx";
 import UserInfo from "../components/UserInfo.jsx";
-import SomeComponent from "../components/SomeComponent.jsx";
+
 
 function Home() {
     const navigate = useNavigate();
@@ -22,3 +21,4 @@ function Home() {
 }
 
 export default Home;
+

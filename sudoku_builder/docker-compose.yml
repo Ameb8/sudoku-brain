@@ -6,9 +6,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        GIT_USERNAME: ${GIT_USERNAME}
-        GIT_TOKEN: ${GIT_TOKEN}
     volumes:
       - .:/app  # Mount the entire project base folder
     env_file:

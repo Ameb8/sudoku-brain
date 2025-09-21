@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include "board_util.h" 
 
-bool hide_cell(board_vals* vals, int board[9][9], int remove_clues);
+bool hide_cell(board_vals* vals, int board[9][9], int remove_clues, bool** isClue);
 void get_puzzle(int solution[9][9], int num_clues);
 
 #endif

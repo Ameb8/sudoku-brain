@@ -6,6 +6,7 @@
 
 board_vals* init_board_vals(bool init_val) {
     board_vals *board = (board_vals*)calloc(1, sizeof(board_vals));
+
     if (board == NULL) {
         printf("Memory allocation failed!\n");
         return NULL;

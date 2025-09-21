@@ -7,19 +7,13 @@ RUN apt-get update && apt-get install -y \
   gdb \
   make \
   curl \
-  git \
   libcurl4-openssl-dev \
   libcjson-dev \
   vim \
-  build-essential \ 
+  build-essential \
   ca-certificates \
   openssh-client
 
-ARG GIT_USERNAME
-ARG GIT_TOKEN
-
-RUN git config --global usr.name "$GIT_USERNAME" && \
-    git config --global user.password "$GIT_TOKEN"
 
 WORKDIR /app
 
