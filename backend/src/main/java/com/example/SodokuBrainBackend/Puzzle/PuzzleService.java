@@ -23,7 +23,7 @@ public class PuzzleService {
 
 
     private PuzzleDTO toPuzzleDTO(Puzzle puzzle) {
-        return new PuzzleDTO(puzzle.getPuzzleId(), puzzle.getPuzzleVals(), puzzle.getSolutionVals());
+        return new PuzzleDTO(puzzle.getPuzzleId(), puzzle.getPuzzleVals(), puzzle.getSolutionVals(), puzzle.getDifficulty());
     }
 
     //gets puzzle by ID
@@ -86,7 +86,7 @@ public class PuzzleService {
             if(hintsUsed == null)
                 hintsUsed = 0;
 
-            SolvedPuzzleDTO solvedPuzzle = new SolvedPuzzleDTO(puzzleIdLong, puzzleVals, solutionVals, secondsToSolve, hintsUsed, rating, startedOn, solvedOn);
+            SolvedPuzzleDTO solvedPuzzle = new SolvedPuzzleDTO(puzzleIdLong, puzzleVals, solutionVals, Difficulty.MEDIUM, secondsToSolve, hintsUsed, rating, startedOn, solvedOn);
             solvedPuzzles.add(solvedPuzzle);
         }
 
@@ -112,7 +112,7 @@ public class PuzzleService {
             if(hintsUsed == null)
                 hintsUsed = 0;
 
-            AttemptedPuzzleDTO attemptedPuzzle = new AttemptedPuzzleDTO(puzzleId, puzzleVals, solutionVals, secondsWorkedOn, hintsUsed, startedOn);
+            AttemptedPuzzleDTO attemptedPuzzle = new AttemptedPuzzleDTO(puzzleId, puzzleVals, solutionVals, Difficulty.MEDIUM, secondsWorkedOn, hintsUsed, startedOn);
             attemptedPuzzles.add(attemptedPuzzle);
         }
 

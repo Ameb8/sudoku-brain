@@ -1,5 +1,6 @@
 package com.example.SodokuBrainBackend.Puzzle;
 
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
@@ -22,11 +23,16 @@ public class Puzzle {
     @Column(name = "num_clues", nullable = false)
     private int numClues;
 
-    public Puzzle(Long puzzleId, String puzzleVals, String solutionVals, int numClues) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "difficulty", nullable = false)
+    private Difficulty difficulty;
+
+    public Puzzle(Long puzzleId, String puzzleVals, String solutionVals, int numClues, Difficulty difficulty) {
         this.puzzleId = puzzleId;
         this.puzzleVals = puzzleVals;
         this.solutionVals = solutionVals;
         this.numClues = numClues;
+        this.difficulty = difficulty;
     }
 
     public Puzzle() { }
@@ -61,5 +67,13 @@ public class Puzzle {
 
     public void setNumClues(int numClues) {
         this.numClues = numClues;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }

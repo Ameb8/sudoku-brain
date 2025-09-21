@@ -1,14 +1,15 @@
 package com.example.SodokuBrainBackend.Puzzle.DTO;
 
 import java.time.LocalDate;
+import com.example.SodokuBrainBackend.Puzzle.Difficulty;
 
-public class SolvedPuzzleDTO extends  PuzzleDTO{
+public class SolvedPuzzleDTO extends  PuzzleDTO {
     private int secondsToSolve, hintsUsed;
     private Byte rating;
     private LocalDate startedOn, solvedOn;
 
-    public SolvedPuzzleDTO(Long puzzleId, String puzzleVals, String solutionVals, int secondsToSolve, int hintsUsed, Byte rating, LocalDate startedOn, LocalDate solvedOn) {
-        super(puzzleId, puzzleVals, solutionVals);
+    public SolvedPuzzleDTO(Long puzzleId, String puzzleVals, String solutionVals, Difficulty difficulty, int secondsToSolve, int hintsUsed, Byte rating, LocalDate startedOn, LocalDate solvedOn) {
+        super(puzzleId, puzzleVals, solutionVals, difficulty);
         this.secondsToSolve = secondsToSolve;
         this.hintsUsed = hintsUsed;
         this.rating = rating;
