@@ -33,6 +33,12 @@ public interface PuzzleRepository  extends JpaRepository<Puzzle, Long> {
     @Procedure(name = "GetPuzzleMetrics")
     List<Object[]> GetPuzzleMetrics(@Param("puzzleId") Long puzzleId);
 
+    @Query(value = "SELECT * FROM puzzle ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Puzzle findRandomPuzzle();
+
+    @Query(value = "SELECT * FROM puzzle WHERE difficulty = :difficulty ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Puzzle findRandomPuzzleByDifficulty(@Param("difficulty") String difficulty);
+
     /*
     @Procedure(name = "GetAttemptedPuzzle")
     List<Object[]> GetAttemptedPuzzle(@Param("puzzleId") long puzzleId, @Param("username") String username);

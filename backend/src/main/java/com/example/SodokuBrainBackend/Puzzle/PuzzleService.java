@@ -35,13 +35,18 @@ public class PuzzleService {
 
     //gets a random puzzle
     public Optional<PuzzleDTO> getRandomPuzzle() {
-        List<Puzzle> puzzles = puzzleRepository.findAll();
-        if (puzzles.isEmpty()) return Optional.empty();
-
-        Random random = new Random();
-        Puzzle randomPuzzle = puzzles.get(random.nextInt(puzzles.size()));
+        Puzzle randomPuzzle = puzzleRepository.findRandomPuzzle();
+        if (randomPuzzle == null) return Optional.empty();
         return Optional.of(toPuzzleDTO(randomPuzzle));
     }
+
+    //gets random puzzle with specified difficulty
+    public Optional<PuzzleDTO> getRandomPuzzleByDifficulty(Difficulty difficulty) {
+        Puzzle randomPuzzle = puzzleRepository.findRandomPuzzleByDifficulty(difficulty.name());
+        if (randomPuzzle == null) return Optional.empty();
+        return Optional.of(toPuzzleDTO(randomPuzzle));
+    }
+
 
     //geta all puzzles
     public List<PuzzleDTO> getAllPuzzles() {

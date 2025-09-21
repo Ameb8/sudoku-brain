@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/puzzles")
@@ -63,13 +64,20 @@ public class PuzzleController {
 
     /**
      * Gets random puzzle
+     * Optional filtering by difficulty
      *
      * @return Random PuzzleDTO Object
      */
     @GetMapping("/random")
-    public ResponseEntity<PuzzleDTO> getRandomPuzzle() {
-        return puzzleService.getRandomPuzzle()
-                .map(ResponseEntity::ok)
+    public ResponseEntity<PuzzleDTO> getRandomPuzzle(@RequestParam(value = "difficulty", required = false) Difficulty difficulty) {
+        Optional<PuzzleDTO> puzzleOpt;
+        if (difficulty == null) {
+            puzzleOpt = puzzleService.getRandomPuzzle();
+        } else {
+            puzzleOpt = puzzleService.getRandomPuzzleByDifficulty(difficulty);
+        }
+
+        return puzzleOpt.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
