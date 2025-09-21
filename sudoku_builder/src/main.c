@@ -4,10 +4,45 @@
 #include "../include/select_clues.h"
 #include "../include/board_util.h"
 #include "../include/upload_puzzle.h"
+#include "../include/flags.h"
+
 
 int gets_puzzle(int board[9][9], int num_clues) {
     get_board(board);
     get_puzzle(board, num_clues);
+}
+
+bool eval_args(int argc, char *argv[], int *num_puzzles, int *num_clues, char** filepath) {
+    int pos_args = 0;
+
+    for(int i = 0; i < argc; i++) {
+		if(isFlag(argv[i], help)) {
+            // printHelp();
+            return false;
+        } else if(isFlag(argv[i], shape)) {
+            if(i >= argc - 1) { // No filepath given
+                // wrong_arg_num(shape)
+                return false;
+            }
+
+            *filepath = argv[++i]; // Get filepath
+        } else {
+            if (pos_args == 0) {
+                *num_puzzles = atoi(argv[i]);
+            } else if (pos_args == 1) {
+                *num_clues = atoi(argv[i]);
+            }
+
+            pos_args++;
+        }
+	}
+
+    if(pos_args != 2) {
+        //wrong_pos_num(pos_args);
+        return false;
+    }
+
+    return true;
 }
 
 int main(int argc, char *argv[]) {
