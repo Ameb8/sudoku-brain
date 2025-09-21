@@ -1,10 +1,11 @@
 import PuzzleMetrics from "../models/PuzzleMetrics.jsx";
 import PropTypes from "prop-types";
 import PuzzleRating from "./PuzzleRating.jsx";
+import DifficultyLabel from "./DifficultyLabel.jsx";
 import "./PuzzleMetricsBanner.css"
 
 
-const PuzzleMetricsBanner = ({ metrics }) => {
+const PuzzleMetricsBanner = ({ metrics, difficulty }) => {
     return (
         <div className="puzzle-metrics-banner">
             <div className="puzzle-metrics-item"><strong>Attempted</strong> {metrics.numAttempted}</div>
@@ -13,6 +14,12 @@ const PuzzleMetricsBanner = ({ metrics }) => {
             <div className="puzzle-metrics-item"><strong>Time Worked</strong> {metrics.timeWorkedOn} hrs</div>
             <div className="puzzle-metrics-item"><strong>Avg Hints Used</strong> {metrics.avgHintsUsed}</div>
             <div className="puzzle-metrics-item"><strong>Total Hints Used</strong> {metrics.totalHintsUsed}</div>
+            {difficulty && (
+                <div className="puzzle-metrics-item">
+                    <strong>Difficulty</strong>{' '}
+                    <DifficultyLabel difficulty={difficulty} />
+                </div>
+            )}
             <PuzzleRating
                 rating={metrics.avgRating}
                 numRates={metrics.numRated}
@@ -23,6 +30,7 @@ const PuzzleMetricsBanner = ({ metrics }) => {
 
 PuzzleMetricsBanner.propTypes = {
     metrics: PropTypes.instanceOf(PuzzleMetrics).isRequired,
+    difficulty: PropTypes.string,
 };
 
 export default PuzzleMetricsBanner;

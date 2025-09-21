@@ -1,9 +1,10 @@
 
 export default class Puzzle {
-    constructor(puzzleId, puzzleVals, solutionVals) {
+    constructor(puzzleId, puzzleVals, solutionVals, difficulty) {
         this.puzzleId = puzzleId;
         this.puzzleVals = puzzleVals;
         this.solutionVals = solutionVals;
+        this.difficulty = difficulty;
     }
 
     isCellCorrect(index, value) {

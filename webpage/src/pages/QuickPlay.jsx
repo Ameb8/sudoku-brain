@@ -24,6 +24,7 @@ function QuickPlay() {
                     puzzleId: puzzleData.puzzleId,
                     puzzleVals: puzzleData.puzzleVals,
                     solutionVals: puzzleData.solutionVals,
+                    difficulty: puzzleData.difficulty,
                 };
                 setPuzzle(newPuzzle);
 
@@ -57,7 +58,7 @@ function QuickPlay() {
         <div>
             <Navbar />
             <Board puzzle={puzzle} />
-            {puzzleMetrics && <PuzzleMetricsBanner metrics={puzzleMetrics} />}
+            {puzzleMetrics && <PuzzleMetricsBanner metrics={puzzleMetrics} difficulty={puzzle.difficulty} />}
         </div>
     );
 }

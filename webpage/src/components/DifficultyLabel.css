@@ -1,0 +1,22 @@
+.difficulty-label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.difficulty-label.easy {
+    color: green;
+}
+
+.difficulty-label.medium {
+    color: goldenrod;
+}
+
+.difficulty-label.hard {
+    color: orange;
+}
+
+.difficulty-label.expert {
+    color: red;
+}
