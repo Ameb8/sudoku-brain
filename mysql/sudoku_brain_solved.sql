@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `solved`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `solved` (
-  `username` varchar(20) NOT NULL,
+  `user_id` bigint NOT NULL,
   `puzzle_id` int unsigned NOT NULL,
   `current_state` char(81) NOT NULL,
   `seconds_worked_on` int unsigned NOT NULL,
@@ -33,13 +33,23 @@ CREATE TABLE `solved` (
   `started_on` date NOT NULL,
   `solved_on` date NOT NULL,
   `rating` tinyint unsigned DEFAULT NULL,
-  PRIMARY KEY (`username`,`puzzle_id`),
+  PRIMARY KEY (`user_id`,`puzzle_id`),
   KEY `puzzle_idx` (`puzzle_id`),
-  KEY `user_idx` (`username`),
+  KEY `user_idx` (`user_id`),
   CONSTRAINT `puzzle` FOREIGN KEY (`puzzle_id`) REFERENCES `puzzle` (`puzzle_id`),
-  CONSTRAINT `user` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+  CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `solved`
+--
+
+LOCK TABLES `solved` WRITE;
+/*!40000 ALTER TABLE `solved` DISABLE KEYS */;
+INSERT INTO `solved` VALUES (1,7,'764135892835492617129876345912647538346958271578213469651784923487329156293561784',265,0,'2025-09-21','2025-09-21',NULL);
+/*!40000 ALTER TABLE `solved` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -50,4 +60,4 @@ CREATE TABLE `solved` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-18 19:16:38
+-- Dump completed on 2025-09-22  1:05:04
