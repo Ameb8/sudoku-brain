@@ -1,0 +1,8 @@
+DROP PROCEDURE IF EXISTS GetNumUsers;
+
+CREATE PROCEDURE GetNumUsers()
+BEGIN
+	SELECT COUNT(*) AS num_users
+    FROM users
+    ;
+END;

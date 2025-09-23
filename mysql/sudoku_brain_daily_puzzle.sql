@@ -18,34 +18,27 @@ USE `sudoku_brain`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `users`
+-- Table structure for table `daily_puzzle`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `daily_puzzle`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT,
-  `auth_provider` varchar(50) DEFAULT NULL,
-  `auth_id` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `username` varchar(50) NOT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
-  `created_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `daily_puzzle` (
+  `day` date NOT NULL,
+  `puzzle_id` int NOT NULL,
+  PRIMARY KEY (`day`),
+  UNIQUE KEY `iddaily_puzzle_UNIQUE` (`day`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `daily_puzzle`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'GOOGLE','112940491773523240633','Alexmeb81@outlook.com','alexbuckley','https://lh3.googleusercontent.com/a/ACg8ocJX7SszHvl8fFa1JZvxeRW1oYDyhSnaglFZN9PdfW5FRn4e49A=s96-c','2025-09-21 02:34:42');
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `daily_puzzle` WRITE;
+/*!40000 ALTER TABLE `daily_puzzle` DISABLE KEYS */;
+/*!40000 ALTER TABLE `daily_puzzle` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

@@ -18,10 +18,6 @@ USE `sudoku_brain`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping events for database 'sudoku_brain'
---
-
---
 -- Dumping routines for database 'sudoku_brain'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `GetAttemptedPuzzle` */;
@@ -76,7 +72,7 @@ BEGIN
         a.started_on
 	FROM users u
 		JOIN attempted a
-			ON u.username = a.username
+			ON u.user_id = a.user_id
 		JOIN puzzle p
 			ON a.puzzle_id = p.puzzle_id
 	WHERE u.username = username
@@ -105,7 +101,7 @@ BEGIN
         COALESCE(AVG(s.hints_used), 0)			AS avg_hints_used
 	FROM users u
 		LEFT JOIN solved s
-			ON u.username = s.username
+			ON u.user_id = s.user_id
 	GROUP BY u.username
     ORDER BY puzzles_solved DESC
     LIMIT page_size
@@ -278,7 +274,7 @@ BEGIN
 			s.solved_on
 		FROM solved s
 			JOIN users u
-				ON s.username = u.username
+				ON s.user_id = u.user_id
         WHERE s.hints_used = 0 AND s.puzzle_id = in_puzzle_id
         ORDER BY s.seconds_worked_on
         LIMIT 1
@@ -354,4 +350,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-18 19:16:39
+-- Dump completed on 2025-09-22  1:05:05

@@ -38,6 +38,24 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db_init:/docker-entrypoint-initdb.d
+
+  flyway_dev:
+    image: flyway/flyway:latest
+    container_name: flyway-dev
+    depends_on:
+      - db_dev
+    volumes:
+      - ./db/migrations:/flyway/sql
+    env_file:
+      - .env
+    command: -baselineOnMigrate=true migrate
+    environment:
+      - FLYWAY_URL=jdbc:mysql://db_dev:3306/${MYSQL_DATABASE}
+      - FLYWAY_USER=${MYSQL_USER}
+      - FLYWAY_PASSWORD=${MYSQL_PASSWORD}
+      - FLYWAY_LOCATIONS=filesystem:/flyway/sql
+      - FLYWAY_LOCATIONS=filesystem:/flyway/sql/versioned,filesystem:/flyway/sql/repeatable
+
 volumes:
   mysql_data:
 
