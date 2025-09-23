@@ -10,6 +10,6 @@ CREATE TABLE `solved` (
   PRIMARY KEY (`user_id`,`puzzle_id`),
   KEY `puzzle_idx` (`puzzle_id`),
   KEY `user_idx` (`user_id`),
-  CONSTRAINT `puzzle` FOREIGN KEY (`puzzle_id`) REFERENCES `puzzle` (`puzzle_id`),
-  CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `solved-puzzle` FOREIGN KEY (`puzzle_id`) REFERENCES `puzzle` (`puzzle_id`),
+  CONSTRAINT `solved-users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -128,3 +128,5 @@ temp/
 # Backup files
 *.bak
 *.old
+
+create-flyway-user.sql
