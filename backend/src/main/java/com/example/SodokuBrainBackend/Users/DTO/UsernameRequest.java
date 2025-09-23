@@ -1,6 +1,7 @@
 package com.example.SodokuBrainBackend.Users.DTO;
 
-public class UsernameRequest {
+public class
+UsernameRequest {
     private String newUsername;
 
     public String getNewUsername() {

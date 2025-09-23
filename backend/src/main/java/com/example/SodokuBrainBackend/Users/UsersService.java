@@ -106,10 +106,14 @@ public class UsersService {
      *
      * @return Users object
      */
-    private Optional<Users> getAuthenticatedUser() {
+    public Optional<Users> getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
         String authId = oauthUser.getAuthId();
         return usersRepository.findByAuthId(authId);
+    }
+
+    public boolean isUsernameTaken(String username) {
+        return usersRepository.existsByUsername(username);
     }
 }

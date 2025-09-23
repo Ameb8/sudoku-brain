@@ -46,6 +46,38 @@ public class UsersController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/secured/update")
+    public ResponseEntity<?> updateUser(@RequestBody Users updatedUser) {
+        Optional<Users> userOptional = usersService.getAuthenticatedUser();
+
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Users existingUser = userOptional.get();
+
+        // Only update the fields that are present in the request
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+
+        if (updatedUser.getUsername() != null) {
+            // Ensure the new username is unique
+            if (usersService.isUsernameTaken(updatedUser.getUsername())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is already taken.");
+            }
+            existingUser.setUsername(updatedUser.getUsername());
+        }
+
+        if (updatedUser.getProfilePicture() != null) {
+            existingUser.setProfilePicture(updatedUser.getProfilePicture());
+        }
+
+        // Save the updated user details
+        Users savedUser = usersService.saveUser(existingUser);
+        return ResponseEntity.ok(savedUser);
+    }
+
     /**
      * Gets all users in database
      *
