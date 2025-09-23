@@ -8,6 +8,7 @@ import com.example.SodokuBrainBackend.Users.Users;
 import com.example.SodokuBrainBackend.Puzzle.Puzzle;
 
 
+@Entity
 public class DailyPuzzle {
 
     @Id

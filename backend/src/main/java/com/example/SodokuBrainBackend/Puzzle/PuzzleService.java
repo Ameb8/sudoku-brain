@@ -22,7 +22,7 @@ public class PuzzleService {
     private PuzzleRepository puzzleRepository;
 
 
-    private PuzzleDTO toPuzzleDTO(Puzzle puzzle) {
+    public PuzzleDTO toPuzzleDTO(Puzzle puzzle) {
         return new PuzzleDTO(puzzle.getPuzzleId(), puzzle.getPuzzleVals(), puzzle.getSolutionVals(), puzzle.getDifficulty());
     }
 

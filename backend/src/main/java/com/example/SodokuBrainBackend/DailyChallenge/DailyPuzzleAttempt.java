@@ -1,6 +1,7 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
 import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttempt;
+import com.example.SodokuBrainBackend.Users.Users;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,8 @@ public class DailyPuzzleAttempt {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "day", referencedColumnName = "day", nullable = false)
     private DailyPuzzle dailyPuzzle;
+
+
 
     @MapsId("puzzleAttemptId")
     @ManyToOne(fetch = FetchType.LAZY)
