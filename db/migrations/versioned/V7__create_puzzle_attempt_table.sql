@@ -1,5 +1,5 @@
 CREATE TABLE puzzle_attempt (
-    id INT AUTO_INCREMENT,
+    id INT UNSIGNED AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     puzzle_id INT UNSIGNED NOT NULL,
     current_state CHAR(81) NOT NULL,
@@ -12,13 +12,13 @@ CREATE TABLE puzzle_attempt (
 
     CONSTRAINT puzzle_attempt__users
         FOREIGN KEY (user_id) 
-        REFERENCES users(user_id) 
-        ON DELETE CASCADE,
+            REFERENCES users(user_id) 
+            ON DELETE CASCADE,
 
     CONSTRAINT puzzle_attempt__puzzle
         FOREIGN KEY (puzzle_id)
-        REFERENCES puzzle(puzzle_id)
-        ON DELETE CASCADE,
+            REFERENCES puzzle(puzzle_id)
+            ON DELETE CASCADE,
 
     INDEX users_puzzle (user_id, puzzle_id),
     INDEX puzzle_users (puzzle_id, user_id)
