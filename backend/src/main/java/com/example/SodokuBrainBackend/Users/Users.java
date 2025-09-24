@@ -96,4 +96,18 @@ public class Users {
     public void setCreatedOn(LocalDateTime createdO) {
         this.createdOn = createdO;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return userId != null && userId.equals(users.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return userId != null ? userId.hashCode() : 0;
+    }
+
 }

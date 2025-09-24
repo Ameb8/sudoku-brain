@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.Move;
 
+
 @Entity
 public class PuzzleAttempt {
 
@@ -34,6 +35,21 @@ public class PuzzleAttempt {
 
     @Column(name = "solved_on")
     private LocalDateTime solvedOn;
+
+    public PuzzleAttempt(LocalDateTime solvedOn, LocalDateTime startedOn, Integer hintsUsed, Integer secondsWorkedOn, String currentState, Integer puzzleId, Long userId, Integer id) {
+        this.solvedOn = solvedOn;
+        this.startedOn = startedOn;
+        this.hintsUsed = hintsUsed;
+        this.secondsWorkedOn = secondsWorkedOn;
+        this.currentState = currentState;
+        this.puzzleId = puzzleId;
+        this.userId = userId;
+        this.id = id;
+    }
+
+    public PuzzleAttempt() {
+    }
+
 
     // Getters and setters
     public Integer getId() {

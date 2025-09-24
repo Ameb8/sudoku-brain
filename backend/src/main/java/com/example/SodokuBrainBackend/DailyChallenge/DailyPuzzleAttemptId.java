@@ -6,16 +6,20 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.example.SodokuBrainBackend.Users.Users;
+import org.apache.catalina.User;
+
+
 @Embeddable
 public class DailyPuzzleAttemptId {
     private LocalDate day;
-    private Integer puzzleAttemptId;
+    private Users user;
 
     public DailyPuzzleAttemptId() {}
 
-    public DailyPuzzleAttemptId(LocalDate day, Integer puzzleAttemptId) {
+    public DailyPuzzleAttemptId(LocalDate day, Users user) {
         this.day = day;
-        this.puzzleAttemptId = puzzleAttemptId;
+        this.user = user;
     }
 
     // Getters and setters
@@ -27,12 +31,12 @@ public class DailyPuzzleAttemptId {
         this.day = day;
     }
 
-    public Integer getPuzzleAttemptId() {
-        return puzzleAttemptId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setPuzzleAttemptId(Integer puzzleAttemptId) {
-        this.puzzleAttemptId = puzzleAttemptId;
+    public void setPuzzleAttemptId(Users user) {
+        this.user = user;
     }
 
     @Override
@@ -45,11 +49,11 @@ public class DailyPuzzleAttemptId {
 
         DailyPuzzleAttemptId that = (DailyPuzzleAttemptId) o;
 
-        return Objects.equals(day, that.day) && Objects.equals(puzzleAttemptId, that.puzzleAttemptId);
+        return Objects.equals(day, that.day) && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(day, puzzleAttemptId);
+        return Objects.hash(day, user);
     }
 }

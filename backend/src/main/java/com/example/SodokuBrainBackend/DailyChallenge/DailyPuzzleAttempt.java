@@ -26,7 +26,7 @@ public class DailyPuzzleAttempt {
 
     public DailyPuzzleAttempt() {}
 
-    public DailyPuzzleAttempt(DailyPuzzle dailyPuzzle, PuzzleAttempt puzzleAttempt) {
+    public DailyPuzzleAttempt(DailyPuzzle dailyPuzzle, PuzzleAttempt puzzleAttempt, Users user) {
         this.id = new DailyPuzzleAttemptId(dailyPuzzle.getDay(), puzzleAttempt.getId());
         this.dailyPuzzle = dailyPuzzle;
         this.puzzleAttempt = puzzleAttempt;

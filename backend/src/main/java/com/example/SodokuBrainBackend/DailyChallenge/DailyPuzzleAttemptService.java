@@ -1,6 +1,5 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
-import com.example.SodokuBrainBackend.Utils.UsersUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,20 +14,30 @@ import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttemptRepository;
 import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.Move;
 import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleAttemptUpdateRequest;
 import com.example.SodokuBrainBackend.Utils.UsersUtils;
+import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttemptService;
+import com.example.SodokuBrainBackend.Utils.UsersUtils;
+
 
 @Service
 public class DailyPuzzleAttemptService {
 
     private final DailyPuzzleAttemptRepository dailyPuzzleAttemptRepository;
     private final PuzzleAttemptRepository puzzleAttemptRepository;
+    private final DailyPuzzleRepository dailyPuzzleRepository;
+    private final PuzzleAttemptService puzzleAttemptService;
 
     @Autowired
     private UsersUtils usersUtils;
 
     public DailyPuzzleAttemptService(DailyPuzzleAttemptRepository dailyPuzzleAttemptRepository,
-                                     PuzzleAttemptRepository puzzleAttemptRepository) {
+                                        PuzzleAttemptRepository puzzleAttemptRepository,
+                                        DailyPuzzleRepository dailyPuzzleRepository,
+                                        PuzzleAttemptService puzzleAttemptService
+                                    ) {
         this.dailyPuzzleAttemptRepository = dailyPuzzleAttemptRepository;
         this.puzzleAttemptRepository = puzzleAttemptRepository;
+        this.dailyPuzzleRepository = dailyPuzzleRepository;
+        this.puzzleAttemptService = puzzleAttemptService
     }
 
     @Transactional
@@ -49,11 +58,47 @@ public class DailyPuzzleAttemptService {
         return puzzleAttemptRepository.save(attempt);
     }
 
-    public DailyPuzzleAttempt getDailyPuzzleAttempt() {
-        Optional<DailyPuzzleAttempt> attempt = dailyPuzzleAttemptRepository.findById(LocalDate.now());
+    public Optional<DailyPuzzleAttempt> getDailyPuzzleAttempt() {
+        Optional<Users> optUser = usersUtils.getAuthenticatedUser();
 
-        usersUtils.getAuthenticatedUser();
+        if(optUser.isEmpty()) { // User not present
+            return Optional.empty();
+        }
+
+        Users user = optUser.get();
+
+        // Get existing DailyPuzzleAttempt
+        DailyPuzzleAttemptId attemptId = new DailyPuzzleAttemptId(LocalDate.now(), user);
+        Optional<DailyPuzzleAttempt> optAttempt = dailyPuzzleAttemptRepository.findById(attemptId);
+
+
+        if(optAttempt.isEmpty()) { // Create new DailyPuzzleAttempt
+            return getDefaultDailyPuzzleAttempt(user);
+        }
+
+        return optAttempt;
+    }
+
+    private Optional<DailyPuzzleAttempt> getDefaultDailyPuzzleAttempt(Users user) {
+        Optional<DailyPuzzle> optDailyPuzzle = dailyPuzzleRepository.findById(LocalDate.now());
+
+        if(optDailyPuzzle.isEmpty()) // Daily Puzzle doesn't exist
+            return Optional.empty();
+
+        Long dailyPuzzleId = optDailyPuzzle.get().getPuzzle().getPuzzleId(); // Get daily puzzle's ID
+        Optional<PuzzleAttempt> optNewAttempt = puzzleAttemptService.getDefaultPuzzleAttempt(dailyPuzzleId, user);
+
+        if(optNewAttempt.isEmpty()) // Puzzle attempt could not be created
+            return Optional.empty();
+
+        PuzzleAttempt newAttempt = optNewAttempt.get();
+
+        DailyPuzzleAttempt dailyAttempt = new DailyPuzzleAttempt()
+
+
 
 
     }
 }
+
+
