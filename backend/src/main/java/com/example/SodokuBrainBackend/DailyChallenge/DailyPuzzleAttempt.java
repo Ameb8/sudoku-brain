@@ -16,9 +16,11 @@ public class DailyPuzzleAttempt {
     @JoinColumn(name = "day", referencedColumnName = "day", nullable = false)
     private DailyPuzzle dailyPuzzle;
 
+    @MapsId("userId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private Users user;
 
-
-    @MapsId("puzzleAttemptId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "puzzle_attempt_id", referencedColumnName = "id", nullable = false)
     private PuzzleAttempt puzzleAttempt;
@@ -27,8 +29,9 @@ public class DailyPuzzleAttempt {
     public DailyPuzzleAttempt() {}
 
     public DailyPuzzleAttempt(DailyPuzzle dailyPuzzle, PuzzleAttempt puzzleAttempt, Users user) {
-        this.id = new DailyPuzzleAttemptId(dailyPuzzle.getDay(), puzzleAttempt.getId());
+        this.id = new DailyPuzzleAttemptId(dailyPuzzle.getDay(), user.getUserId());
         this.dailyPuzzle = dailyPuzzle;
+        this.user = user;
         this.puzzleAttempt = puzzleAttempt;
     }
 

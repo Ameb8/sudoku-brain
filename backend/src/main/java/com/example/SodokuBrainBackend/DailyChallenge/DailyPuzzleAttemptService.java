@@ -1,5 +1,6 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
+import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleAttemptDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class DailyPuzzleAttemptService {
         this.dailyPuzzleAttemptRepository = dailyPuzzleAttemptRepository;
         this.puzzleAttemptRepository = puzzleAttemptRepository;
         this.dailyPuzzleRepository = dailyPuzzleRepository;
-        this.puzzleAttemptService = puzzleAttemptService
+        this.puzzleAttemptService = puzzleAttemptService;
     }
 
     @Transactional
@@ -79,6 +80,11 @@ public class DailyPuzzleAttemptService {
         return optAttempt;
     }
 
+    public DailyPuzzleAttemptDTO toDailyPuzzleAttemptDTO(DailyPuzzleAttempt dailyAttempt) {
+        PuzzleAttempt attempt = dailyAttempt.getPuzzleAttempt();
+        return new DailyPuzzleAttemptDTO(puzzleAttemptService.toPuzzleAttemptDTO(attempt));
+    }
+
     private Optional<DailyPuzzleAttempt> getDefaultDailyPuzzleAttempt(Users user) {
         Optional<DailyPuzzle> optDailyPuzzle = dailyPuzzleRepository.findById(LocalDate.now());
 
@@ -91,13 +97,11 @@ public class DailyPuzzleAttemptService {
         if(optNewAttempt.isEmpty()) // Puzzle attempt could not be created
             return Optional.empty();
 
+        // create default attempt
         PuzzleAttempt newAttempt = optNewAttempt.get();
+        DailyPuzzleAttempt dailyAttempt = new DailyPuzzleAttempt(optDailyPuzzle.get(), newAttempt, user);
 
-        DailyPuzzleAttempt dailyAttempt = new DailyPuzzleAttempt()
-
-
-
-
+        return Optional.of(dailyPuzzleAttemptRepository.save(dailyAttempt));
     }
 }
 

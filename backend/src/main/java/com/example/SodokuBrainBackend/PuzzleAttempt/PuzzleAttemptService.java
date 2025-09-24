@@ -1,5 +1,6 @@
 package com.example.SodokuBrainBackend.PuzzleAttempt;
 
+import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.PuzzleAttemptDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -39,22 +40,6 @@ public class PuzzleAttemptService {
         return puzzleAttemptRepository.save(attempt);
     }
 
-
-    /*
-
-        public PuzzleAttempt(LocalDateTime solvedOn, LocalDateTime startedOn, Integer hintsUsed, Integer secondsWorkedOn, String currentState, Integer puzzleId, Long userId, Integer id) {
-        this.solvedOn = solvedOn;
-        this.startedOn = startedOn;
-        this.hintsUsed = hintsUsed;
-        this.secondsWorkedOn = secondsWorkedOn;
-        this.currentState = currentState;
-        this.puzzleId = puzzleId;
-        this.userId = userId;
-        this.id = id;
-    }
-
-     */
-
     public Optional<PuzzleAttempt> getDefaultPuzzleAttempt(long puzzleId, Users user) {
         if(user == null) // User does not exist
             return Optional.empty();
@@ -68,7 +53,17 @@ public class PuzzleAttemptService {
 
         // Save default attempted object to db
         PuzzleAttempt newAttempt = initDefaultAttempt(puzzle, user);
-        PuzzleAttempt savedAttempt = puzzleAttemptRepository.save(newAttempt);
+        return Optional.of(puzzleAttemptRepository.save(newAttempt));
+    }
+
+    public PuzzleAttemptDTO toPuzzleAttemptDTO(PuzzleAttempt attempt) {
+        return new PuzzleAttemptDTO(
+                attempt.getCurrentState(),
+                attempt.getSecondsWorkedOn(),
+                attempt.getHintsUsed(),
+                attempt.getStartedOn(),
+                attempt.getSolvedOn()
+        );
     }
 
     private PuzzleAttempt initDefaultAttempt(Puzzle puzzle, Users user) {
@@ -76,7 +71,7 @@ public class PuzzleAttemptService {
         PuzzleAttempt newAttempt = new PuzzleAttempt();
         newAttempt.setStartedOn(LocalDateTime.now());
         newAttempt.setCurrentState(puzzle.getPuzzleVals());
-        newAttempt.setUserId(user.getUserId());
+        newAttempt.setUser(user);
 
         return newAttempt;
     }

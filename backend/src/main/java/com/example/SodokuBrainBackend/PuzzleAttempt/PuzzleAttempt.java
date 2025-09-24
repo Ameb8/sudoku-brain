@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.Move;
+import com.example.SodokuBrainBackend.Users.Users;
+import com.example.SodokuBrainBackend.Puzzle.Puzzle;
 
 
 @Entity
@@ -15,11 +17,13 @@ public class PuzzleAttempt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "puzzle_attempt__users"))
+    private Users user;
 
-    @Column(name = "puzzle_id", nullable = false)
-    private Integer puzzleId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "puzzle_id", referencedColumnName = "puzzle_id", foreignKey = @ForeignKey(name = "puzzle_attempt__puzzle"))
+    private Puzzle puzzle;
 
     @Column(name = "current_state", nullable = false, length = 81)
     private String currentState;
@@ -36,14 +40,14 @@ public class PuzzleAttempt {
     @Column(name = "solved_on")
     private LocalDateTime solvedOn;
 
-    public PuzzleAttempt(LocalDateTime solvedOn, LocalDateTime startedOn, Integer hintsUsed, Integer secondsWorkedOn, String currentState, Integer puzzleId, Long userId, Integer id) {
+    public PuzzleAttempt(LocalDateTime solvedOn, LocalDateTime startedOn, Integer hintsUsed, Integer secondsWorkedOn, String currentState, Puzzle puzzle, Users user, Integer id) {
         this.solvedOn = solvedOn;
         this.startedOn = startedOn;
         this.hintsUsed = hintsUsed;
         this.secondsWorkedOn = secondsWorkedOn;
         this.currentState = currentState;
-        this.puzzleId = puzzleId;
-        this.userId = userId;
+        this.puzzle = puzzle;
+        this.user = user;
         this.id = id;
     }
 
@@ -60,20 +64,20 @@ public class PuzzleAttempt {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
-    public Integer getPuzzleId() {
-        return puzzleId;
+    public Puzzle getPuzzle() {
+        return puzzle;
     }
 
-    public void setPuzzleId(Integer puzzleId) {
-        this.puzzleId = puzzleId;
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
     }
 
     public String getCurrentState() {

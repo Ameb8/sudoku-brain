@@ -11,18 +11,18 @@ import org.apache.catalina.User;
 
 
 @Embeddable
-public class DailyPuzzleAttemptId {
+public class DailyPuzzleAttemptId implements Serializable {
+
     private LocalDate day;
-    private Users user;
+    private Long userId;
 
     public DailyPuzzleAttemptId() {}
 
-    public DailyPuzzleAttemptId(LocalDate day, Users user) {
+    public DailyPuzzleAttemptId(LocalDate day, Long userId) {
         this.day = day;
-        this.user = user;
+        this.userId = userId;
     }
 
-    // Getters and setters
     public LocalDate getDay() {
         return day;
     }
@@ -31,29 +31,29 @@ public class DailyPuzzleAttemptId {
         this.day = day;
     }
 
-    public Users getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPuzzleAttemptId(Users user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
     public boolean equals(Object o) {
-        if(this == o)
+        if (this == o)
             return true;
 
-        if(!(o instanceof DailyPuzzleAttemptId))
+        if (!(o instanceof DailyPuzzleAttemptId))
             return false;
 
         DailyPuzzleAttemptId that = (DailyPuzzleAttemptId) o;
 
-        return Objects.equals(day, that.day) && Objects.equals(user, that.user);
+        return Objects.equals(day, that.day) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(day, user);
+        return Objects.hash(day, userId);
     }
 }
