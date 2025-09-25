@@ -1,5 +1,6 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
+import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleResponseDTO;
 import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
 import com.example.SodokuBrainBackend.Users.Users;
 import org.springframework.http.ResponseEntity;
@@ -18,44 +19,29 @@ import java.util.Optional;
 @RequestMapping("/daily-challenge")
 public class DailyPuzzleController {
 
+    private final DailyPuzzleService dailyPuzzleService;
     private final DailyPuzzleAttemptService dailyPuzzleAttemptService;
 
     @Autowired
     private UsersUtils usersUtils;
 
-    public DailyPuzzleController(DailyPuzzleAttemptService dailyPuzzleAttemptService) {
+    public DailyPuzzleController(DailyPuzzleService dailyPuzzleService, DailyPuzzleAttemptService dailyPuzzleAttemptService) {
+        this.dailyPuzzleService = dailyPuzzleService;
         this.dailyPuzzleAttemptService = dailyPuzzleAttemptService;
     }
 
+    /*
     @PostMapping("/update")
     public ResponseEntity<PuzzleAttempt> updateDailyPuzzleAttempt(@RequestBody DailyPuzzleAttemptUpdateRequest request) {
         PuzzleAttempt updatedAttempt = dailyPuzzleAttemptService.updateDailyPuzzleAttempt(request);
         return ResponseEntity.ok(updatedAttempt);
     }
+     */
 
-    @GetMapping("/api/daily-puzzle/today")
-    public ResponseEntity<?> getTodayPuzzle() {
-        LocalDate today = LocalDate.now();
-        Optional<Users> optUser = usersUtils.getAuthenticatedUser();
-
-        if(!optUser.isPresent()) { // User not logged in
-
-        }
-
-        // Not logged in? Just return the puzzle
-        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            return ResponseEntity.ok(Map.of("dailyPuzzle", puzzle));
-        }
-
-        // Logged in: Get or create attempt
-        CustomOAuth2User user = (CustomOAuth2User) auth.getPrincipal();
-        Long userId = user.getUserId();
-
-        PuzzleAttempt attempt = dailyPuzzleAttemptService.getOrCreateAttempt(today, userId, puzzle);
-
-        return ResponseEntity.ok(Map.of(
-                "dailyPuzzle", puzzle,
-                "attempt", attempt
-        ));
+    @GetMapping("/play")
+    public ResponseEntity<DailyPuzzleResponseDTO> getDailyPuzzle() {
+        return dailyPuzzleService.getDailyPuzzle()
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

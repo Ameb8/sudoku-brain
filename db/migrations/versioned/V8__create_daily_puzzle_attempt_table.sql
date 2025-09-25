@@ -1,4 +1,4 @@
-CREATE TABLE daily_puzzle_attempt {
+CREATE TABLE daily_puzzle_attempt (
     day DATE NOT NULL,
     user_id BIGINT NOT NULL,
     puzzle_attempt_id INT UNSIGNED NOT NULL,
@@ -18,6 +18,5 @@ CREATE TABLE daily_puzzle_attempt {
     CONSTRAINT daily_puzzle_attempt__puzzle_attempt
         FOREIGN KEY (puzzle_attempt_id)
             REFERENCES puzzle_attempt(id)
-            ON DELETE CASCADE,
-
-};
+            ON DELETE CASCADE
+);

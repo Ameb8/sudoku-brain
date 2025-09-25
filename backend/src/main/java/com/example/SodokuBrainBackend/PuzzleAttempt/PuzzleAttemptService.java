@@ -31,7 +31,7 @@ public class PuzzleAttemptService {
         this.puzzleAttemptRepository = puzzleAttemptRepository;
         this.puzzleRepository = puzzleRepository;
     }
-
+/*
     public PuzzleAttempt applyMoves(Long puzzleAttemptId, List<Move> moves) {
         PuzzleAttempt attempt = puzzleAttemptRepository.findById(Math.toIntExact(puzzleAttemptId))
                 .orElseThrow(() -> new ResourceNotFoundException("PuzzleAttempt not found"));
@@ -39,7 +39,7 @@ public class PuzzleAttemptService {
         attempt.applyMoves(moves);
         return puzzleAttemptRepository.save(attempt);
     }
-
+*/
     public Optional<PuzzleAttempt> getDefaultPuzzleAttempt(long puzzleId, Users user) {
         if(user == null) // User does not exist
             return Optional.empty();

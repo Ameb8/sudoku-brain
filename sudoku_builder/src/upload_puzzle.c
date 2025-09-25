@@ -8,9 +8,12 @@
 #include <stdint.h>
 #include "../include/upload_puzzle.h"
 
+#define DIFFICULTY "MEDIUM"
+
 typedef struct {
     char puzzle_vals[82];
     char solution_vals[82];
+    char* difficulty;
     uint8_t num_clues;
 } puzzle_model;
 
@@ -22,6 +25,7 @@ static puzzle_model* init_puzzle_model(int puzzle[9][9]) {
     }
 
     model->num_clues = 0;
+    model->difficulty = DIFFICULTY;
 
     for(int i = 0; i < 9; i++) {
         for(int j = 0; j < 9; j++) {
@@ -50,9 +54,14 @@ static char* get_json(int puzzle[9][9]) {
     cJSON_AddStringToObject(puzzle_json, "puzzleVals", model->puzzle_vals);
     cJSON_AddStringToObject(puzzle_json, "solutionVals", model->solution_vals);
     cJSON_AddNumberToObject(puzzle_json, "numClues", model->num_clues);
+	cJSON_AddStringToObject(puzzle_json, "difficulty", model->difficulty);
 
     // Convert to string
     char *json_string = cJSON_PrintUnformatted(puzzle_json);
+
+    // DEBUG
+    printf("\n\n\nREQUEST DATA:\n\n%s\n\n", json_string);
+
     cJSON_Delete(puzzle_json);
     return json_string;
 }
@@ -118,3 +127,4 @@ bool upload_puzzle(int puzzle[9][9]) {
 
     return success;
 }
+

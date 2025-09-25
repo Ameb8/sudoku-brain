@@ -3,6 +3,7 @@ package com.example.SodokuBrainBackend.Utils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
 import com.example.SodokuBrainBackend.Users.Users;
 import com.example.SodokuBrainBackend.Users.UsersRepository;
 
-
+@Component
 public class UsersUtils {
     private final UsersRepository usersRepository;
 

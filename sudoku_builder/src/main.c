@@ -15,7 +15,7 @@ int gets_puzzle(int board[9][9], int num_clues) {
 bool eval_args(int argc, char *argv[], int *num_puzzles, int *num_clues, char** filepath) {
     int pos_args = 0;
 
-    for(int i = 0; i < argc; i++) {
+    for(int i = 1; i < argc; i++) {
 		if(isFlag(argv[i], help)) {
             // printHelp();
             return false;
@@ -46,14 +46,19 @@ bool eval_args(int argc, char *argv[], int *num_puzzles, int *num_clues, char** 
 }
 
 int main(int argc, char *argv[]) {
-    if(argc != 3) {
-        printf("Number of puzzles to generate and number of clues each must be provided as arguments\n");
-        
-        return -1;
-    }
+    int num_puzzles = 0;
+    int num_clues = 0;
+    char* filepath = NULL;
 
-    int num_puzzles = atoi(argv[1]);
-    int num_clues = atoi(argv[2]);
+    bool run_builder = eval_args(argc, argv, &num_puzzles, &num_clues, &filepath);
+
+	// DEBUG
+	printf("\n\nArgs: %d, %d, %s", num_puzzles, num_clues, filepath);
+
+    if(!run_builder) {
+    	printf("\n\nrun=false"); // DEBUG
+	    return 0;
+	}
 
     if(num_puzzles < 1 || num_clues < 17 || num_clues > 80) {
         printf("Arguments are invalid. Please try again\n");

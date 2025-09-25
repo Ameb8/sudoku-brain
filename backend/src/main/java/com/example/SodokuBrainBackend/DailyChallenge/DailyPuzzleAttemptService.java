@@ -40,7 +40,7 @@ public class DailyPuzzleAttemptService {
         this.dailyPuzzleRepository = dailyPuzzleRepository;
         this.puzzleAttemptService = puzzleAttemptService;
     }
-
+/*
     @Transactional
     public PuzzleAttempt updateDailyPuzzleAttempt(DailyPuzzleAttemptUpdateRequest request) {
         DailyPuzzleAttemptId id = new DailyPuzzleAttemptId(request.getDay(), request.getPuzzleAttemptId());
@@ -58,7 +58,7 @@ public class DailyPuzzleAttemptService {
         // Save the updated PuzzleAttempt entity
         return puzzleAttemptRepository.save(attempt);
     }
-
+*/
     public Optional<DailyPuzzleAttempt> getDailyPuzzleAttempt() {
         Optional<Users> optUser = usersUtils.getAuthenticatedUser();
 
@@ -69,7 +69,7 @@ public class DailyPuzzleAttemptService {
         Users user = optUser.get();
 
         // Get existing DailyPuzzleAttempt
-        DailyPuzzleAttemptId attemptId = new DailyPuzzleAttemptId(LocalDate.now(), user);
+        DailyPuzzleAttemptId attemptId = new DailyPuzzleAttemptId(LocalDate.now(), user.getUserId());
         Optional<DailyPuzzleAttempt> optAttempt = dailyPuzzleAttemptRepository.findById(attemptId);
 
 
