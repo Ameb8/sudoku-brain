@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-bool upload_puzzle(int puzzle[9][9]);
+bool upload_puzzle(int puzzle[9][9], bool daily);
 
 #endif

@@ -12,21 +12,23 @@ int gets_puzzle(int board[9][9], int num_clues) {
     get_puzzle(board, num_clues);
 }
 
-bool eval_args(int argc, char *argv[], int *num_puzzles, int *num_clues, char** filepath) {
+bool eval_args(int argc, char *argv[], int *num_puzzles, int *num_clues, char** filepath, bool* daily) {
     int pos_args = 0;
 
     for(int i = 1; i < argc; i++) {
-		if(isFlag(argv[i], help)) {
+		if(isFlag(argv[i], helpFlag)) {
             // printHelp();
             return false;
-        } else if(isFlag(argv[i], shape)) {
+        } else if(isFlag(argv[i], shapeFlag)) {
             if(i >= argc - 1) { // No filepath given
                 // wrong_arg_num(shape)
                 return false;
             }
 
             *filepath = argv[++i]; // Get filepath
-        } else {
+		} else if(isFlag(argv[i], dailyFlag)) {
+			*daily = true;
+		} else {
             if (pos_args == 0) {
                 *num_puzzles = atoi(argv[i]);
             } else if (pos_args == 1) {
@@ -49,8 +51,9 @@ int main(int argc, char *argv[]) {
     int num_puzzles = 0;
     int num_clues = 0;
     char* filepath = NULL;
+	bool daily = false;
 
-    bool run_builder = eval_args(argc, argv, &num_puzzles, &num_clues, &filepath);
+    bool run_builder = eval_args(argc, argv, &num_puzzles, &num_clues, &filepath, &daily);
 
 	// DEBUG
 	printf("\n\nArgs: %d, %d, %s", num_puzzles, num_clues, filepath);
@@ -72,6 +75,6 @@ int main(int argc, char *argv[]) {
         int board[9][9];
         gets_puzzle(board, num_clues);
         print_board(board);
-        upload_puzzle(board);
+        upload_puzzle(board, daily);
     }
 }

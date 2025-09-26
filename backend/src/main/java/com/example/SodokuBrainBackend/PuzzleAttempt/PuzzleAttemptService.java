@@ -72,6 +72,9 @@ public class PuzzleAttemptService {
         newAttempt.setStartedOn(LocalDateTime.now());
         newAttempt.setCurrentState(puzzle.getPuzzleVals());
         newAttempt.setUser(user);
+        newAttempt.setHintsUsed(0);
+        newAttempt.setSecondsWorkedOn(0);
+        newAttempt.setPuzzle(puzzle);
 
         return newAttempt;
     }

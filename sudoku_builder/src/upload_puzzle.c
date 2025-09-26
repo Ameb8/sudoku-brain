@@ -66,13 +66,21 @@ static char* get_json(int puzzle[9][9]) {
     return json_string;
 }
 
-bool upload_puzzle(int puzzle[9][9]) {
+bool upload_puzzle(int puzzle[9][9], bool daily) {
     CURL *curl;
     CURLcode result;
     bool success = false;
 
     char *api_key = getenv("ADMIN_KEY");
-    const char *api_url = getenv("API_URL");
+
+	char *api_url = NULL;
+
+	if (daily)
+    	api_url = getenv("SET_DAILY_URL");
+	else
+    	api_url = getenv("SET_PUZZLE_URL");
+
+
 
     // Strip trailing newline from ADMIN_KEY
     if (api_key) {

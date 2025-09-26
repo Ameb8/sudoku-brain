@@ -11,8 +11,9 @@ typedef struct {
     int max_args;
 } Flag;
 
-extern const Flag shape;
-extern const Flag help;
+extern const Flag shapeFlag;
+extern const Flag helpFlag;
+extern const Flag dailyFlag;
 
 bool isFlag(char* arg, Flag flag);
 
