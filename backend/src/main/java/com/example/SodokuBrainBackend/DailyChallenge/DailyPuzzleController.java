@@ -1,8 +1,12 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
 import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleResponseDTO;
+import com.example.SodokuBrainBackend.Puzzle.Puzzle;
+import com.example.SodokuBrainBackend.Puzzle.PuzzleService;
 import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
 import com.example.SodokuBrainBackend.Users.Users;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +29,34 @@ public class DailyPuzzleController {
     @Autowired
     private UsersUtils usersUtils;
 
-    public DailyPuzzleController(DailyPuzzleService dailyPuzzleService, DailyPuzzleAttemptService dailyPuzzleAttemptService) {
+    @Value("${api.key}")
+    private String apiKey;
+
+    public DailyPuzzleController(DailyPuzzleService dailyPuzzleService, DailyPuzzleAttemptService dailyPuzzleAttemptService, PuzzleService puzzleService) {
         this.dailyPuzzleService = dailyPuzzleService;
         this.dailyPuzzleAttemptService = dailyPuzzleAttemptService;
     }
+
+    /**
+     * POST method for uploading daily puzzles to database
+     *
+     * @param providedKey API key required to upload
+     * @param puzzle to be uploaded
+     * @return response confirming success or failure
+     */
+    @PostMapping
+    public ResponseEntity<?> createDailyPuzzle(
+            @RequestHeader(value = "X-API-KEY", required = false) String providedKey,
+            @RequestBody Puzzle puzzle)
+        {
+
+        if (providedKey == null || !providedKey.equals(apiKey)) // Validate api key
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or missing API key");
+
+        Optional<DailyPuzzle> savedDailyPuzzle = dailyPuzzleService.setDailyPuzzle(puzzle);
+        return ResponseEntity.ok(savedDailyPuzzle);
+    }
+
 
     /*
     @PostMapping("/update")
