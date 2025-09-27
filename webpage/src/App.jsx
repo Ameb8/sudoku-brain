@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import QuickPlay from "./pages/QuickPlay";
 import LeaderBoardPage from "./pages/LeaderBoardPage.jsx";
+import DailyChallenge from "./pages/DailyChallenge";
 import './App.css'
 import {UserProvider} from "./components/UserProvider.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/Profile" element={<ProfilePage />} />
                     <Route path="/AttemptedPuzzles" element={<AttemptedPuzzles />} />
                     <Route path="/PlayPuzzle" element={<PlayPuzzle />} />
+                    <Route path="/DailyChallenge" element={<DailyChallenge />} />
                 </Routes>
             </Router>
         </UserProvider>

@@ -15,6 +15,7 @@ function Home() {
                 <button className="main-button" onClick={() => navigate("/QuickPlay")}>Quick Play</button>
                 <button className="main-button" onClick={() => navigate("/LeaderBoardPage")}>Leader Board</button>
                 <button className="main-button" onClick={() => navigate("/AttemptedPuzzles")}>Continue Puzzle</button>
+                <button className="main-button" onClick={() => navigate("/DailyChallenge")}>Daily Challenge</button>
             </div>
         </div>
     );
