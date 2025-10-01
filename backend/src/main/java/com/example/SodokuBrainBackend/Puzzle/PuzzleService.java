@@ -170,4 +170,9 @@ public class PuzzleService {
                 recordDate
         );
     }
+
+    //@Transactional
+    //public Optional<ShapedPuzzleDTO> getRandShapedPuzzle(Optional<Difficulty> difficulty) {
+
+    //}
 }

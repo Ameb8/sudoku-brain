@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
-import { createSaveProgress } from "./saveUserPuzzle.jsx";
+import { createSaveProgress } from "../components/saveUserPuzzle.jsx";
 import './Board.css';
 import useUserPuzzle from "../models/useUserPuzzle";
-import { useUser } from "./UserProvider.jsx";
+import { useUser } from "../components/UserProvider.jsx";
 import PropTypes from "prop-types";
 import { useRef } from 'react';
 
 
-const Board = ({ puzzle }) => {
+const Board = ({ puzzle, userPuzzleOverride }) => {
     const { user, loading } = useUser();
     const { userPuzzle, loading: userPuzzleLoading, error } = useUserPuzzle(puzzle.puzzleId);
+    const effectiveUserPuzzle = userPuzzleOverride || userPuzzle;
 
     const [secondsWorkedOn, setSecondsWorkedOn] = useState(0);
     const [saveProgress, setSaveProgress] = useState(null);
     const lastSavedTimeRef = useRef(0);
 
     const formatTime = (totalSeconds) => {
-        const baseSeconds = userPuzzle?.secondsWorkedOn || 0;
+        const baseSeconds = effectiveUserPuzzle?.secondsWorkedOn || 0;
         const total = totalSeconds + baseSeconds;
         const hours = Math.floor(total / 3600);
         const minutes = Math.floor((total % 3600) / 60);
@@ -25,17 +26,17 @@ const Board = ({ puzzle }) => {
     };
 
     useEffect(() => {
-        if (userPuzzle && !userPuzzleLoading) {
+        if (effectiveUserPuzzle && !userPuzzleLoading) {
             const getSecondsWorkedOn = () => {
                 const now = secondsWorkedOn;
                 const delta = now - lastSavedTimeRef.current;
                 lastSavedTimeRef.current = now; // update the last saved time
                 return delta;
             };
-            const save = createSaveProgress(userPuzzle, getSecondsWorkedOn);
+            const save = createSaveProgress(effectiveUserPuzzle, getSecondsWorkedOn);
             setSaveProgress(() => save);
         }
-    }, [userPuzzle, userPuzzleLoading, secondsWorkedOn]);
+    }, [effectiveUserPuzzle, userPuzzleLoading, secondsWorkedOn]);
 
 
     useEffect(() => {
@@ -56,10 +57,10 @@ const Board = ({ puzzle }) => {
 
     // When puzzle and userPuzzle are loaded, build the grid
     useEffect(() => {
-        if (puzzle && userPuzzle && !userPuzzleLoading) {
+        if (puzzle && effectiveUserPuzzle && !userPuzzleLoading) {
             const newGrid = Array.from({ length: 81 }, (_, i) => {
                 const clueVal = puzzle.puzzleVals[i];
-                const userVal = userPuzzle.currentState ? userPuzzle.currentState[i] : '';
+                const userVal = effectiveUserPuzzle.currentState ? effectiveUserPuzzle.currentState[i] : '';
 
                 if (clueVal >= '1' && clueVal <= '9') {
                     return {
@@ -88,7 +89,7 @@ const Board = ({ puzzle }) => {
 
             setGrid(newGrid);
         }
-    }, [puzzle, userPuzzle, userPuzzleLoading]);
+    }, [puzzle, effectiveUserPuzzle, userPuzzleLoading]);
 
     // Handle cell value change
     const handleCellInput = (index, inputValue, isNote) => {

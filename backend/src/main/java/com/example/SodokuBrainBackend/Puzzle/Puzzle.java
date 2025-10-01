@@ -76,4 +76,5 @@ public class Puzzle {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
 }

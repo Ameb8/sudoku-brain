@@ -51,8 +51,7 @@ public class PuzzleAttempt {
         this.id = id;
     }
 
-    public PuzzleAttempt() {
-    }
+    public PuzzleAttempt() { }
 
 
     // Getters and setters
@@ -150,5 +149,13 @@ public class PuzzleAttempt {
             if (c < '1' || c > '9') return false;
         }
         return true;
+    }
+
+    public void useHints(int hints) {
+        this.hintsUsed += hints;
+    }
+
+    public void addSeconds(int seconds) {
+        this.secondsWorkedOn += seconds;
     }
 }

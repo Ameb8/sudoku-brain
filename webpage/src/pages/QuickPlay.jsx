@@ -17,6 +17,10 @@ function QuickPlay() {
     useEffect(() => {
         const fetchPuzzleAndMetrics = async () => {
             try {
+                const response = await fetch(`http://localhost:8080/api/puzzles/secured/userpuzzle/${puzzleId}`, {
+                    credentials: "include",
+                });
+
                 const puzzleResponse = await axios.get("http://localhost:8080/api/puzzles/random");
                 const puzzleData = puzzleResponse.data;
 
