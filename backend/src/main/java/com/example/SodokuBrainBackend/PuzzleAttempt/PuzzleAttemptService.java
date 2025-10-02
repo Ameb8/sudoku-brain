@@ -33,13 +33,14 @@ public class PuzzleAttemptService {
         this.puzzleRepository = puzzleRepository;
     }
 
+    /*
     public PuzzleAttempt applyMoves(Long puzzleAttemptId, List<Move> moves) {
         PuzzleAttempt attempt = puzzleAttemptRepository.findById(Math.toIntExact(puzzleAttemptId))
                 .orElseThrow(() -> new ResourceNotFoundException("PuzzleAttempt not found"));
 
         attempt.applyMoves(moves);
         return puzzleAttemptRepository.save(attempt);
-    }
+    }*/
 
     public Optional<PuzzleAttempt> getDefaultPuzzleAttempt(long puzzleId, Users user) {
         if(user == null) // User does not exist
@@ -91,7 +92,7 @@ public class PuzzleAttemptService {
             char newVal = (char) ('0' + move.getValue());
             int cell = move.getCell();
             char oldVal = newPuzzleState.charAt(cell);
-            char correctVal = puzzle.getSolutionVals().charAt(cell)
+            char correctVal = puzzle.getSolutionVals().charAt(cell);
 
             newPuzzleState.setCharAt(move.getCell(), newVal); // Update board
 
@@ -116,8 +117,7 @@ public class PuzzleAttemptService {
 
         }
 
-
-        return Optional.of(attempt);
+        return Optional.of(puzzleAttemptRepository.save(attempt));
     }
 
 
