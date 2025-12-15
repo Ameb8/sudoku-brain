@@ -1,0 +1,90 @@
+/* Container */
+.leaderboard-container {
+    max-width: 1000px;
+}
+
+/* Title */
+.leaderboard-title {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Card wrapper */
+.leaderboard-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1rem 1.25rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Table base */
+.leaderboard-table {
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Header */
+.leaderboard-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c757d;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0.9rem;
+}
+
+/* Rows */
+.leaderboard-table tbody tr {
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.leaderboard-table tbody tr:hover {
+    background-color: #f8faff;
+}
+
+/* Cells */
+.leaderboard-table td {
+    padding: 0.9rem;
+    vertical-align: middle;
+    border-top: 1px solid #f1f3f5;
+    font-size: 0.95rem;
+}
+
+/* Rank styling */
+.rank {
+    font-weight: 700;
+    color: #495057;
+}
+
+/* Username emphasis */
+.username {
+    font-weight: 600;
+    color: #212529;
+}
+
+/* Top 3 highlight */
+.leaderboard-table tbody tr:nth-child(1) .rank {
+    color: #d4af37;
+}
+.leaderboard-table tbody tr:nth-child(2) .rank {
+    color: #adb5bd;
+}
+.leaderboard-table tbody tr:nth-child(3) .rank {
+    color: #cd7f32;
+}
+
+/* Mobile tweaks */
+@media (max-width: 576px) {
+    .leaderboard-title {
+        font-size: 1.4rem;
+    }
+
+    .leaderboard-table td,
+    .leaderboard-table th {
+        padding: 0.6rem;
+    }
+}
