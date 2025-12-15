@@ -1,5 +1,6 @@
 package com.example.SodokuBrainBackend.PuzzleAttempt;
 
+import com.example.SodokuBrainBackend.Auth.Ownable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,7 @@ import com.example.SodokuBrainBackend.Puzzle.Puzzle;
 
 
 @Entity
-public class PuzzleAttempt {
+public class PuzzleAttempt implements Ownable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +64,7 @@ public class PuzzleAttempt {
         this.id = id;
     }
 
+    @Override
     public Users getUser() {
         return user;
     }

@@ -25,8 +25,10 @@ function DailyChallenge() {
 
                 console.log("Full puzzle API response:", puzzleData)
 
+
+                /*
                 const puzzle = puzzleData.dailyPuzzle.puzzle;
-               setPuzzleAttempt(puzzleData.dailyAttempt.puzzleAttempt);
+                setPuzzleAttempt(puzzleData.dailyAttempt.puzzleAttempt);
 
                 const newPuzzle = {
                     puzzleId: puzzle.puzzleId,
@@ -35,13 +37,27 @@ function DailyChallenge() {
                     difficulty: puzzle.difficulty,
                 };
                 setPuzzle(newPuzzle);
+                */
+
+                const puzzle = puzzleData.dailyPuzzle.puzzle;
+
+                setPuzzle({
+                    puzzleId: puzzle.puzzleId,
+                    puzzleVals: puzzle.puzzleVals,
+                    solutionVals: puzzle.solutionVals,
+                    difficulty: puzzle.difficulty,
+                });
+
+                setPuzzleAttempt(
+                    puzzleData.dailyAttempt?.puzzleAttempt || null
+                );
 
                 const metrics = await PuzzleMetrics.fetchMetrics(puzzle.puzzleId)
 
                 setPuzzleMetrics(metrics);
                 setLoading(false);
 
-                const userPuzzle = puzzleData.dailyAttempt.puzzleAttempt;
+                //const userPuzzle = puzzleData.dailyAttempt.puzzleAttempt;
             } catch (err) {
                 console.log("Failed to load metrics...");
                 setError("Failed to fetch data");

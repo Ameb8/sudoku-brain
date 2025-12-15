@@ -1,12 +1,13 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
 import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttempt;
+import com.example.SodokuBrainBackend.Auth.Ownable;
 import com.example.SodokuBrainBackend.Users.Users;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "daily_puzzle_attempt")
-public class DailyPuzzleAttempt {
+public class DailyPuzzleAttempt implements Ownable {
 
     @EmbeddedId
     private DailyPuzzleAttemptId id;
@@ -58,5 +59,10 @@ public class DailyPuzzleAttempt {
 
     public void setPuzzleAttempt(PuzzleAttempt puzzleAttempt) {
         this.puzzleAttempt = puzzleAttempt;
+    }
+
+    @Override
+    public Users getUser() {
+        return user;
     }
 }

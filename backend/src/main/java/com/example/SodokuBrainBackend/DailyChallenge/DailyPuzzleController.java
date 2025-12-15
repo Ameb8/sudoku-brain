@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleAttemptUpdateRequest;
 import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttempt;
@@ -25,6 +26,7 @@ public class DailyPuzzleController {
 
     private final DailyPuzzleService dailyPuzzleService;
     private final DailyPuzzleAttemptService dailyPuzzleAttemptService;
+    private final PuzzleService puzzleService;
 
     @Autowired
     private UsersUtils usersUtils;
@@ -35,6 +37,7 @@ public class DailyPuzzleController {
     public DailyPuzzleController(DailyPuzzleService dailyPuzzleService, DailyPuzzleAttemptService dailyPuzzleAttemptService, PuzzleService puzzleService) {
         this.dailyPuzzleService = dailyPuzzleService;
         this.dailyPuzzleAttemptService = dailyPuzzleAttemptService;
+        this.puzzleService = puzzleService;
     }
 
     /**
@@ -55,6 +58,11 @@ public class DailyPuzzleController {
 
         Optional<DailyPuzzle> savedDailyPuzzle = dailyPuzzleService.setDailyPuzzle(puzzle);
         return ResponseEntity.ok(savedDailyPuzzle);
+    }
+
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong";
     }
 
 

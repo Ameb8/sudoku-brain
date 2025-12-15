@@ -1,108 +1,54 @@
 package com.example.SodokuBrainBackend.DailyChallenge;
 
 import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleAttemptDTO;
+import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.PuzzleAttemptDTO;
+import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttempt;
+import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttemptService;
+import com.example.SodokuBrainBackend.Users.Users;
+import com.example.SodokuBrainBackend.Auth.AuthService;
+import com.example.SodokuBrainBackend.Users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 import java.time.LocalDate;
-
-import com.example.SodokuBrainBackend.Users.Users;
-import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttempt;
-import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttemptRepository;
-import com.example.SodokuBrainBackend.PuzzleAttempt.DTO.Move;
-import com.example.SodokuBrainBackend.DailyChallenge.DTO.DailyPuzzleAttemptUpdateRequest;
-import com.example.SodokuBrainBackend.Utils.UsersUtils;
-import com.example.SodokuBrainBackend.PuzzleAttempt.PuzzleAttemptService;
-import com.example.SodokuBrainBackend.Utils.UsersUtils;
-
+import java.util.Optional;
 
 @Service
 public class DailyPuzzleAttemptService {
 
-    private final DailyPuzzleAttemptRepository dailyPuzzleAttemptRepository;
-    private final PuzzleAttemptRepository puzzleAttemptRepository;
-    private final DailyPuzzleRepository dailyPuzzleRepository;
-    private final PuzzleAttemptService puzzleAttemptService;
+    @Autowired
+    private DailyPuzzleAttemptRepository dailyPuzzleAttemptRepository;
 
     @Autowired
-    private UsersUtils usersUtils;
+    private PuzzleAttemptService puzzleAttemptService;
 
-    public DailyPuzzleAttemptService(DailyPuzzleAttemptRepository dailyPuzzleAttemptRepository,
-                                        PuzzleAttemptRepository puzzleAttemptRepository,
-                                        DailyPuzzleRepository dailyPuzzleRepository,
-                                        PuzzleAttemptService puzzleAttemptService
-                                    ) {
-        this.dailyPuzzleAttemptRepository = dailyPuzzleAttemptRepository;
-        this.puzzleAttemptRepository = puzzleAttemptRepository;
-        this.dailyPuzzleRepository = dailyPuzzleRepository;
-        this.puzzleAttemptService = puzzleAttemptService;
-    }
-/*
-    @Transactional
-    public PuzzleAttempt updateDailyPuzzleAttempt(DailyPuzzleAttemptUpdateRequest request) {
-        DailyPuzzleAttemptId id = new DailyPuzzleAttemptId(request.getDay(), request.getPuzzleAttemptId());
+    @Autowired
+    private UsersService usersService;
 
-        DailyPuzzleAttempt dailyAttempt = dailyPuzzleAttemptRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DailyPuzzleAttempt not found"));
-
-        PuzzleAttempt attempt = dailyAttempt.getPuzzleAttempt();
-        if (attempt == null) {
-            throw new RuntimeException("PuzzleAttempt not found in DailyPuzzleAttempt");
-        }
-
-        attempt.applyMoves(request.getMoves());
-
-        // Save the updated PuzzleAttempt entity
-        return puzzleAttemptRepository.save(attempt);
-    }
-*/
+    /**
+     * Returns the current user's attempt for today's daily puzzle (if it exists)
+     */
     public Optional<DailyPuzzleAttempt> getDailyPuzzleAttempt() {
-        Optional<Users> optUser = usersUtils.getAuthenticatedUser();
+        // Construct DailyPuzzleAttempt Primary Key
+        Optional<Users> currentUser = usersService.getAuthenticatedUser();
+        LocalDate today = LocalDate.now();
 
-        if(optUser.isEmpty()) { // User not present
+        if(currentUser.isEmpty()) // No authenticated user
             return Optional.empty();
-        }
 
-        Users user = optUser.get();
-
-        // Get existing DailyPuzzleAttempt
-        DailyPuzzleAttemptId attemptId = new DailyPuzzleAttemptId(LocalDate.now(), user.getUserId());
-        Optional<DailyPuzzleAttempt> optAttempt = dailyPuzzleAttemptRepository.findById(attemptId);
-
-
-        if(optAttempt.isEmpty()) { // Create new DailyPuzzleAttempt
-            return getDefaultDailyPuzzleAttempt(user);
-        }
-
-        return optAttempt;
+        return dailyPuzzleAttemptRepository
+                .findByIdDayAndIdUserId(today, currentUser.get().getUserId());
     }
 
-    public DailyPuzzleAttemptDTO toDailyPuzzleAttemptDTO(DailyPuzzleAttempt dailyAttempt) {
-        PuzzleAttempt attempt = dailyAttempt.getPuzzleAttempt();
-        return new DailyPuzzleAttemptDTO(puzzleAttemptService.toPuzzleAttemptDTO(attempt));
-    }
+    /**
+     * Converts DailyPuzzleAttempt → DailyPuzzleAttemptDTO
+     */
+    public DailyPuzzleAttemptDTO toDailyPuzzleAttemptDTO(DailyPuzzleAttempt attempt) {
+        PuzzleAttempt puzzleAttempt = attempt.getPuzzleAttempt();
 
-    private Optional<DailyPuzzleAttempt> getDefaultDailyPuzzleAttempt(Users user) {
-        Optional<DailyPuzzle> optDailyPuzzle = dailyPuzzleRepository.findById(LocalDate.now());
+        PuzzleAttemptDTO puzzleAttemptDTO =
+                puzzleAttemptService.toPuzzleAttemptDTO(puzzleAttempt);
 
-        if(optDailyPuzzle.isEmpty()) // Daily Puzzle doesn't exist
-            return Optional.empty();
-
-        Long dailyPuzzleId = optDailyPuzzle.get().getPuzzle().getPuzzleId(); // Get daily puzzle's ID
-        Optional<PuzzleAttempt> optNewAttempt = puzzleAttemptService.getDefaultPuzzleAttempt(dailyPuzzleId, user);
-
-        if(optNewAttempt.isEmpty()) // Puzzle attempt could not be created
-            return Optional.empty();
-
-        // create default attempt
-        PuzzleAttempt newAttempt = optNewAttempt.get();
-        DailyPuzzleAttempt dailyAttempt = new DailyPuzzleAttempt(optDailyPuzzle.get(), newAttempt, user);
-
-        return Optional.of(dailyPuzzleAttemptRepository.save(dailyAttempt));
+        return new DailyPuzzleAttemptDTO(puzzleAttemptDTO);
     }
 }
-
-
