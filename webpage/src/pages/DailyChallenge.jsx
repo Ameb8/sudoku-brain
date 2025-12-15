@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Board from "../board/Board.jsx";
 import PuzzleMetricsBanner from "../components/PuzzleMetricsBanner";
 import axios from "axios";
-import PuzzleMetrics from "../models/PuzzleMetrics"; // Import the PuzzleMetrics class
+import PuzzleMetrics from "../models/PuzzleMetrics";
 import LoginButton from "../components/LoginButton.jsx";
 import Navbar from "../components/Navbar.jsx";
 
@@ -56,7 +56,6 @@ function DailyChallenge() {
 
                 setPuzzleMetrics(metrics);
                 setLoading(false);
-
                 //const userPuzzle = puzzleData.dailyAttempt.puzzleAttempt;
             } catch (err) {
                 console.log("Failed to load metrics...");

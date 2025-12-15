@@ -2,7 +2,7 @@
   /*max-width: 1280px;*/
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  // padding: 2rem;
   text-align: center;
   background: rgb(45,173,253);
   background: radial-gradient(circle, rgba(45,173,253,1) 55%, rgba(34,95,195,1) 100%);
