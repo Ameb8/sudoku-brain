@@ -16,12 +16,14 @@ function QuickPlay() {
     // Fetch random puzzle from the API when the component mounts
     useEffect(() => {
         const fetchPuzzleAndMetrics = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/api/puzzles/secured/userpuzzle/${puzzleId}`, {
-                    credentials: "include",
-                });
+            setLoading(true);
 
-                const puzzleResponse = await axios.get("http://localhost:8080/api/puzzles/random");
+            try {
+                // ---- REQUIRED: Fetch puzzle ----
+                const puzzleResponse = await axios.get(
+                    "http://localhost:8080/api/puzzles/random"
+                );
+
                 const puzzleData = puzzleResponse.data;
 
                 const newPuzzle = {
@@ -30,21 +32,29 @@ function QuickPlay() {
                     solutionVals: puzzleData.solutionVals,
                     difficulty: puzzleData.difficulty,
                 };
+
                 setPuzzle(newPuzzle);
 
-                const metrics = await PuzzleMetrics.fetchMetrics(puzzleData.puzzleId)
+                // ---- OPTIONAL: Fetch metrics (non-blocking) ----
+                try {
+                    const metrics = await PuzzleMetrics.fetchMetrics(puzzleData.puzzleId);
+                    setPuzzleMetrics(metrics);
+                } catch (metricsErr) {
+                    console.warn("Metrics failed to load", metricsErr);
+                    setPuzzleMetrics(null); // explicitly optional
+                }
 
-                setPuzzleMetrics(metrics);
-                setLoading(false);
-            } catch (err) {
-                console.log("Failed to load metrics...");
-                setError("Failed to fetch data");
+            } catch (puzzleErr) {
+                console.error("Failed to load puzzle", puzzleErr);
+                setError("Failed to load puzzle");
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchPuzzleAndMetrics();
     }, []);
+
 
     if (loading) {
         return <div>Loading...</div>;
@@ -60,7 +70,7 @@ function QuickPlay() {
 
     return (
         <div>
-            <Navbar />
+            {/*<Navbar />*/})
             <Board puzzle={puzzle} />
             {puzzleMetrics && <PuzzleMetricsBanner metrics={puzzleMetrics} difficulty={puzzle.difficulty} />}
         </div>

@@ -81,7 +81,6 @@ function DailyChallenge() {
 
     return (
         <div>
-            <Navbar />
             <Board puzzle={puzzle} userPuzzleOverride={puzzleAttempt} />
             {puzzleMetrics && <PuzzleMetricsBanner metrics={puzzleMetrics} difficulty={puzzle.difficulty} />}
         </div>

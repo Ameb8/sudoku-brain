@@ -2,17 +2,17 @@ body {
     background-color: lightblue;
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;*/
     min-height: 100vh;
 }
 
 #grid-container {
-    display: grid;
+    /*display: grid;
     grid-template-columns: repeat(9, 50px);
     grid-template-rows: repeat(9, 50px);
-    justify-content: center;
+    justify-content: center; */
     margin: 20px auto;
 }
 

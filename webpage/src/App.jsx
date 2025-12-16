@@ -8,12 +8,14 @@ import {UserProvider} from "./components/UserProvider.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import AttemptedPuzzles from "./pages/AttemptedPuzzles.jsx";
 import PlayPuzzle from "./pages/PlayPuzzle.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 
 
 function App() {
     return (
         <UserProvider>
+            <Navbar></Navbar>
             <Router>
                 <Routes>
                     <Route path="/" element={<Home />} />
