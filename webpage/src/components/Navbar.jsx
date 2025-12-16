@@ -1,4 +1,7 @@
 import "./Navbar.css";
+
+import { Link } from "react-router-dom";
+
 import UserProfile from "./UserProfile.jsx";
 import UserAvatar from "./UserAvatar.jsx";
 import LoginButton from "./LoginButton.jsx";
@@ -13,7 +16,9 @@ export default function Navbar() {
 
     return (
         <nav className="navbar">
-            <div className="navbar-title">SudokuBrain</div>
+            <div className="navbar-title">
+                <Link to="/">SudokuBrain</Link>
+            </div>
 
             <div className="navbar-user">
                 {user ? <UserProfile /> : <LoginButton />}
@@ -26,5 +31,6 @@ export default function Navbar() {
         </nav>
     );
 }
+
 
 

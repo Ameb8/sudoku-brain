@@ -16,9 +16,16 @@
     overflow: visible;
 }
 
-.navbar-title {
-    font-size: 24px;
-    font-weight: bold;
+.navbar-title a {
+    text-decoration: none; /* removes underline */
+    color: inherit;        /* inherits the white color from navbar */
+    font-weight: bold;     /* optional, matches navbar-title */
+    font-size: inherit;    /* optional, matches navbar-title */
+    cursor: pointer;       /* gives it hover pointer */
+}
+
+.navbar-title a:hover {
+    color: #f0f0f0; /* optional: subtle hover effect */
 }
 
 .navbar-user {

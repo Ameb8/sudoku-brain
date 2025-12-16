@@ -15,8 +15,9 @@ import Navbar from "./components/Navbar.jsx";
 function App() {
     return (
         <UserProvider>
-            <Navbar></Navbar>
             <Router>
+                <Navbar />
+
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/QuickPlay" element={<QuickPlay />} />
