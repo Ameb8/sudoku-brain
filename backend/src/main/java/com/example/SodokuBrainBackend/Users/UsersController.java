@@ -1,6 +1,8 @@
 package com.example.SodokuBrainBackend.Users;
 
 import com.example.SodokuBrainBackend.Users.DTO.LeaderboardDTO;
+import com.example.SodokuBrainBackend.Users.DTO.RegisterRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -150,6 +152,14 @@ public class UsersController {
     @GetMapping("/numUsers")
     public long getNumUsers() {
         return usersService.getNumUsers();
+    }
+
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+        Optional<Users> user = usersService.registerLocalUser(req);
+        return user.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

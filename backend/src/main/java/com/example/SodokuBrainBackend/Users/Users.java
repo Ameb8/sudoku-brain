@@ -29,13 +29,18 @@ public class Users {
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDateTime createdOn;
 
-    public Users(Long userId, String authProvider, String authId, String username, String profilePicture, LocalDateTime createdOn) {
+    @Column(name = "password_hash")
+    private String passwordHash;
+
+
+    public Users(Long userId, String authProvider, String authId, String username, String profilePicture, LocalDateTime createdOn, String passwordHash) {
         this.userId = userId;
         this.authProvider = authProvider;
         this.authId = authId;
         this.username = username;
         this.profilePicture = profilePicture;
         this.createdOn = createdOn;
+        this.passwordHash = passwordHash;
     }
 
     public Users() {
@@ -97,6 +102,15 @@ public class Users {
         this.createdOn = createdO;
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,5 +123,5 @@ public class Users {
     public int hashCode() {
         return userId != null ? userId.hashCode() : 0;
     }
-
 }
+

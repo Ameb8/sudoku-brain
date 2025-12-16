@@ -1,32 +1,44 @@
 package com.example.SodokuBrainBackend.Users;
 
-
-import com.example.SodokuBrainBackend.Puzzle.DTO.AttemptedPuzzleDTO;
-import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
-import com.example.SodokuBrainBackend.Users.DTO.LeaderboardDTO;
-import com.example.SodokuBrainBackend.Users.Users;
-import com.example.SodokuBrainBackend.Users.UsersRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.SodokuBrainBackend.Users.DTO.RegisterRequest;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.SodokuBrainBackend.Puzzle.DTO.AttemptedPuzzleDTO;
+import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
+
+import com.example.SodokuBrainBackend.Users.DTO.LeaderboardDTO;
+import com.example.SodokuBrainBackend.Users.Users;
+import com.example.SodokuBrainBackend.Users.UsersRepository;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 @Service
 public class UsersService {
 
-    @Autowired
     private UsersRepository usersRepository;
 
-    public UsersService(UsersRepository usersRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -107,10 +119,36 @@ public class UsersService {
      * @return Users object
      */
     public Optional<Users> getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-        String authId = oauthUser.getAuthId();
-        return usersRepository.findByAuthId(authId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) return Optional.empty();
+
+        Object principal = auth.getPrincipal();
+
+        if (principal instanceof CustomOAuth2User oauth) {
+            return usersRepository.findByAuthId(oauth.getAuthId());
+        }
+
+        if (principal instanceof UserDetails userDetails) {
+            return usersRepository.findByUsername(userDetails.getUsername());
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Users> registerLocalUser(@RequestBody RegisterRequest req) {
+        // Check if username is taken
+        if (isUsernameTaken(req.getUsername()))
+            return Optional.empty();
+
+        Users user = new Users();
+        user.setUsername(req.getUsername());
+        user.setEmail(req.getEmail());
+        user.setAuthProvider("LOCAL");
+        user.setPasswordHash(passwordEncoder.encode(req.getPassword()));
+        user.setCreatedOn(LocalDateTime.now());
+
+        saveUser(user);
+        return Optional.of(user);
     }
 
     public boolean isUsernameTaken(String username) {

@@ -13,6 +13,8 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     Optional<Users> findByAuthId(String authId);
 
+    Optional<Users> findByUsername(String username);
+
     @Procedure(name = "GetLeaders")
     List<Object[]> GetLeaderboard(@Param("page_offset") Long pageOffset, @Param("page_size") int pageSize);
 
