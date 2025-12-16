@@ -28,32 +28,3 @@ export default function Navbar() {
 }
 
 
-
-
-
-/*
-import "./Navbar.css";
-import UserProfile from "./UserProfile.jsx";
-import UserAvatar from "./UserAvatar.jsx"; // Import the CSS file
-
-export default function Navbar() {
-    return (
-        <nav className="navbar">
-            <div className="navbar-title">SudokuBrain</div>
-
-            <div className="navbar-user">
-                <UserProfile />
-            </div>
-            <div className="navbar-spacer-two"></div>
-            <div>
-                <UserAvatar />
-            </div>
-            <div className="navbar-spacer"></div>
-        </nav>
-    );
-}
- */
-
-
-
-
