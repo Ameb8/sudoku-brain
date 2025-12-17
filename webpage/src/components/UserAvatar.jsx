@@ -24,6 +24,11 @@ export default function UserAvatar() {
     }, []);
 
     const handleLogout = () => {
+        fetch("http://localhost:8080/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+
         setUser(null);
     };
 

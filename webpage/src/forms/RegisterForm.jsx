@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Eye, EyeSlash } from 'react-bootstrap-icons'; // Bootstrap icons
 
+import { useUser } from '../components/UserProvider.jsx';
 
 const RegisterForm = () => {
     const [username, setUsername] = useState('');
@@ -12,8 +13,11 @@ const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    const { setUser } = useUser();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             return;
@@ -22,24 +26,59 @@ const RegisterForm = () => {
         setError('');
         setLoading(true);
 
-        try {
-            const response = await fetch('http://localhost:8080/api/users/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password }),
+        try { // Register local account
+            const registerResponse = await fetch(
+                'http://localhost:8080/api/users/register',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password }),
+                }
+            );
+
+            if (!registerResponse.ok) {
+                const err = await registerResponse.text();
+                throw new Error(err || 'Registration failed');
+            }
+
+            // Automated login on successful registration
+            const loginResponse = await fetch(
+                'http://localhost:8080/api/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        username,
+                        password,
+                    }),
+                    credentials: 'include',
+                }
+            );
+
+            if (!loginResponse.ok) {
+                throw new Error('Login after registration failed');
+            }
+
+            // Fetch user data and update context
+            const meResponse = await fetch('http://localhost:8080/api/users/secured/me', {
+                credentials: 'include',
             });
+            if (!meResponse.ok) throw new Error('Failed to fetch user data');
 
-            const data = await response.json();
+            const userData = await meResponse.json();
+            setUser(userData);
 
-            if (!response.ok) throw new Error(data.message || 'Account Creation failed');
+            window.location.href = '/'; // Return to home
 
-            alert('Register successful!'); // Replace with your logic
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
+
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
