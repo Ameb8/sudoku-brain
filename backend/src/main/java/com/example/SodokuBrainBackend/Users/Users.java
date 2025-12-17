@@ -11,10 +11,10 @@ public class Users {
     @Column(name = "user_id", unique = true, nullable = false)
     private Long userId;
 
-    @Column(name = "auth_provider", nullable = false)
+    @Column(name = "auth_provider", nullable = true)
     private String authProvider;
 
-    @Column(name = "auth_id", nullable = false)
+    @Column(name = "auth_id", nullable = true)
     private String authId;
 
     @Column(name = "email", unique = true)
@@ -29,7 +29,7 @@ public class Users {
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDateTime createdOn;
 
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", nullable = true)
     private String passwordHash;
 
 

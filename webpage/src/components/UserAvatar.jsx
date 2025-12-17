@@ -6,6 +6,7 @@ import UserDropdown from './UserDropdown.jsx';
 
 export default function UserAvatar() {
     const { user, loading } = useUser();
+    const { setUser } = useUser();
     const [showDropdown, setShowDropdown] = useState(false);
     const avatarRef = useRef(null);
 
@@ -23,8 +24,7 @@ export default function UserAvatar() {
     }, []);
 
     const handleLogout = () => {
-        // Add your logout logic here
-        console.log("Logged out");
+        setUser(null);
     };
 
     return (
