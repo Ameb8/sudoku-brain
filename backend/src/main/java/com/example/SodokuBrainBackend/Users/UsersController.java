@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,24 +32,42 @@ public class UsersController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @GetMapping("/secured/me")
+    public ResponseEntity<Users> me() {
+        return usersService.getAuthenticatedUser()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
+
     /**
      * Gets user info for logged in users
      *
      * @param principal OAuth2 user info
      * @returnUser information
-     */
+
     @GetMapping("/secured/me")
-    public ResponseEntity<Users> getLoggedInUserInfo(@AuthenticationPrincipal OAuth2User principal) {
-        if (principal == null) {
+    public ResponseEntity<Users> getLoggedInUserInfo(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String email = principal.getAttribute("email");
-        Optional<Users> userOptional = usersService.getUserByEmail(email);
+        Object principal = authentication.getPrincipal();
 
-        return userOptional.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        if (principal instanceof CustomOAuth2User oauthUser) {
+            return usersService.getUserByEmail(oauthUser.getEmail())
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+
+        if (principal instanceof UserDetails userDetails) {
+            return usersService.getUserByUsername(userDetails.getUsername())
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+     */
 
     @PatchMapping("/secured/update")
     public ResponseEntity<?> updateUser(@RequestBody Users updatedUser) {

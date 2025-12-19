@@ -5,6 +5,8 @@ import com.example.SodokuBrainBackend.Puzzle.PuzzleRepository;
 import com.example.SodokuBrainBackend.Security.CustomOAuth2User;
 import com.example.SodokuBrainBackend.Users.Users;
 import com.example.SodokuBrainBackend.Users.UsersRepository;
+import com.example.SodokuBrainBackend.Users.UsersService;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +24,15 @@ public class UserPuzzleService {
     private final SolvedRepository solvedRepository;
     private final PuzzleRepository puzzleRepository;
     private final UsersRepository usersRepository;
+    private final UsersService usersService;
 
     @Autowired
-    public UserPuzzleService(AttemptedRepository attemptedRepository, SolvedRepository solvedRepository, PuzzleRepository puzzleRepository, UsersRepository usersRepository) {
+    public UserPuzzleService(AttemptedRepository attemptedRepository, SolvedRepository solvedRepository, PuzzleRepository puzzleRepository, UsersRepository usersRepository, UsersService usersService) {
         this.attemptedRepository = attemptedRepository;
         this.solvedRepository = solvedRepository;
         this.puzzleRepository = puzzleRepository;
         this.usersRepository = usersRepository;
+        this.usersService = usersService;
     }
 
     /**
@@ -43,7 +47,7 @@ public class UserPuzzleService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
         String authId = oauthUser.getAuthId();
-        Optional<Users> optUser = usersRepository.findByAuthId(authId);
+        Optional<Users> optUser = getAuthenticatedUser();
 
         if(optUser.isEmpty())
             return null;
@@ -210,9 +214,7 @@ public class UserPuzzleService {
      * @return Users object
      */
     private Optional<Users> getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-        String authId = oauthUser.getAuthId();
-        return usersRepository.findByAuthId(authId);
+        return usersService.getAuthenticatedUser();
     }
+
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from './UserProvider';
 import LoginButton from './LoginButton';
 import RegisterButton from './RegisterButton';
+import LocalLoginButton from "./LocalLoginButton.jsx";
 
 export default function UserDropdown({ onLogout }) {
     const { user } = useUser();
@@ -23,6 +24,9 @@ export default function UserDropdown({ onLogout }) {
                     <>
                         <Dropdown.Item as={Link} to="/login">
                             <LoginButton />
+                        </Dropdown.Item>
+                        <Dropdown.Item>
+                            <LocalLoginButton />
                         </Dropdown.Item>
                         <Dropdown.Item>
                             <RegisterButton />
