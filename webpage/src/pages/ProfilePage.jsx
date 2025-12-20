@@ -8,6 +8,7 @@ const ProfilePage = () => {
     const [solvedPuzzlesCount, setSolvedPuzzlesCount] = useState(0); // State for solved puzzles count
     const [isEditing, setIsEditing] = useState(false);
     const [newUsername, setNewUsername] = useState("");
+    const [theme, setTheme] = useState("light");
 
     useEffect(() => {
         if (user) {
@@ -49,6 +50,10 @@ const ProfilePage = () => {
             fetchSolvedPuzzles();
         }
     }, [user]);
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+    }, [theme]);
 
     const handleUsernameUpdate = async () => {
         try {
@@ -115,6 +120,10 @@ const ProfilePage = () => {
                 </p>
                 <p className="profile-attempted">Puzzles Attempted: {attemptedPuzzlesCount}</p>
                 <p className="profile-solved">Puzzles Solved: {solvedPuzzlesCount}</p>
+
+                <button onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>
+                    Toggle Theme
+                </button>
             </div>
         </div>
     );
