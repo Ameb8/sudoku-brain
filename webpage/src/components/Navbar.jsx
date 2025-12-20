@@ -21,7 +21,7 @@ export default function Navbar() {
             </div>
 
             <div className="navbar-user">
-                {user ? <UserProfile /> : <LoginButton />}
+                {user && <UserProfile />}
             </div>
             <div className="navbar-spacer-two"></div>
             <div>

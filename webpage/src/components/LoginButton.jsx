@@ -1,4 +1,4 @@
-import "./LoginButton.css"
+import "./LoginButton.css";
 
 const LoginButton = () => {
     const handleLogin = () => {
@@ -6,8 +6,16 @@ const LoginButton = () => {
     };
 
     return (
-        <button onClick={handleLogin} className="login-button">
-            Login with Google
+        <button
+            onClick={handleLogin}
+            className="google-login-btn d-flex align-items-center gap-2"
+        >
+            <img
+                src="https://developers.google.com/identity/images/g-logo.png"
+                alt="Google logo"
+                className="google-logo"
+            />
+            <span>Sign in with Google</span>
         </button>
     );
 };
