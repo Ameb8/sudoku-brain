@@ -1,0 +1,34 @@
+.user-dropdown-menu {
+    padding: 12px;
+    width: 260px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.auth-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.auth-action {
+    width: 100%;
+    display: block;
+}

@@ -15,8 +15,8 @@ export default function UserDropdown({ onLogout }) {
     return (
         <>
             <Dropdown show={showDropdown} autoClose={false}>
-                <Dropdown.Menu show className="show">
-                    {user ? ( // Logged-in view
+                <Dropdown.Menu className="user-dropdown-menu">
+                    {user ? (
                         <>
                             <Dropdown.Item as={Link} to="/Profile">
                                 Profile
@@ -25,52 +25,31 @@ export default function UserDropdown({ onLogout }) {
                             <Dropdown.Divider />
                             <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
                         </>
-                    ) : ( // Logged-out view
-                        <>
-                            <Dropdown.Item as={Link} to="/login">
-                                <LoginButton />
-                            </Dropdown.Item>
-                            <Dropdown.Item>
+                    ) : (
+                        <div className="auth-dropdown">
+                            <LoginButton />
+
+                            <div className="auth-divider">
+                                <span>or</span>
+                            </div>
+
+                            <div className="auth-action">
                                 <LocalLoginButton />
-                            </Dropdown.Item>
-                            <Dropdown.Item>
+                            </div>
+
+                            <div className="auth-action">
                                 <RegisterButton />
-                            </Dropdown.Item>
+                            </div>
+
+                            <Dropdown.Divider />
                             <Dropdown.Item href="#/settings">Settings</Dropdown.Item>
-                        </>
+                        </div>
                     )}
                 </Dropdown.Menu>
+
             </Dropdown>
         </>
     );
 }
 
 
-
-
-
-
-
-
-
-
-/*
-import { Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
-export default function UserDropdown({ onLogout }) {
-    return (
-        <div className="user-dropdown shadow-sm">
-            <Dropdown.Menu show className="show">
-                <Dropdown.Item as={Link} to="/Profile">
-                    Profile
-                </Dropdown.Item>
-                <Dropdown.Item href="#/settings">Settings</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={onLogout}>Logout</Dropdown.Item>
-            </Dropdown.Menu>
-        </div>
-    );
-}
-
-*/

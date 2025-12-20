@@ -3,6 +3,11 @@ import { debounce } from 'lodash';
 
 export function createSaveProgress(userPuzzle, getSecondsWorkedOn) {
     return debounce(async (updatedState) => {
+        // DEBUG *******
+        console.log('Debounced save fired');
+        console.log('Updated state:', updatedState);
+        // END DEBUG ***
+
         const attempted = {
             id: userPuzzle.id,
             user: userPuzzle.user,
@@ -12,6 +17,7 @@ export function createSaveProgress(userPuzzle, getSecondsWorkedOn) {
             hintsUsed: 0, // default for now
             startedOn: userPuzzle.startedOn,
         };
+
 
         // Log the attempted object to see exactly what is being sent
         console.log('Sending the following JSON:', JSON.stringify(attempted, null, 2));

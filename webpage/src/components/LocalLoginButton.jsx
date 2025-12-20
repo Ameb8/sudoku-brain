@@ -16,26 +16,8 @@ const ToggleLoginButton = () => {
 
     return (
         <>
-            <button
-                onClick={handleClick}
-                className="btn btn-gradient px-4 py-2 text-white fw-bold"
-                style={{
-                    background: 'linear-gradient(90deg, #6a11cb, #2575fc)',
-                    border: 'none',
-                    borderRadius: '50px',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-                }}
-            >
-                Login
+            <button onClick={handleClick} className="auth-btn auth-btn-primary">
+                Log in with username
             </button>
 
             {showLogin && (

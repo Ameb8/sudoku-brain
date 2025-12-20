@@ -44,9 +44,6 @@ public class UserPuzzleService {
      */
     public UserPuzzle getUserPuzzle(long puzzleId) {
         //get authenticated user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
-        String authId = oauthUser.getAuthId();
         Optional<Users> optUser = getAuthenticatedUser();
 
         if(optUser.isEmpty())
