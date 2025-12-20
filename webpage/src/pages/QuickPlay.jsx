@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Board from "../components/Board.jsx";
 import PuzzleMetricsBanner from "../components/PuzzleMetricsBanner";
 import axios from "axios";
-import PuzzleMetrics from "../models/PuzzleMetrics"; // Import the PuzzleMetrics class
+import PuzzleMetrics from "../models/PuzzleMetrics";
 import LoginButton from "../components/LoginButton.jsx";
 import Navbar from "../components/Navbar.jsx";
 

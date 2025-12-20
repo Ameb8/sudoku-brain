@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Eye, EyeSlash } from 'react-bootstrap-icons';
+
+import { Eye, EyeSlash } from 'react-bootstrap-icons'; // Bootstrap icons
+
 import { useUser } from '../components/UserProvider.jsx';
 
-const LoginForm = () => {
+const LocalLoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -16,8 +18,7 @@ const LoginForm = () => {
         setError('');
         setLoading(true);
 
-        try {
-            // Login request
+        try { // Attempt login using form data
             const loginResponse = await fetch(
                 'http://localhost:8080/api/login',
                 {
@@ -34,25 +35,20 @@ const LoginForm = () => {
             );
 
             if (!loginResponse.ok) {
-                throw new Error('Invalid username or password');
+                throw new Error('Login failed');
             }
 
-            // Fetch authenticated user
-            const meResponse = await fetch(
-                'http://localhost:8080/api/users/secured/me',
-                {
-                    credentials: 'include',
-                }
-            );
-
-            if (!meResponse.ok) {
-                throw new Error('Failed to fetch user data');
-            }
+            // Fetch user data and update context
+            const meResponse = await fetch('http://localhost:8080/api/users/secured/me', {
+                credentials: 'include',
+            });
+            if (!meResponse.ok) throw new Error('Failed to fetch user data');
 
             const userData = await meResponse.json();
             setUser(userData);
 
-            window.location.href = '/'; // redirect after login
+            window.location.href = '/'; // Return to home
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -60,20 +56,21 @@ const LoginForm = () => {
         }
     };
 
+
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSubmit(e);
         }
-    }
+    };
 
     return (
-        <div>
+        <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
             <form
                 className="p-4 shadow rounded bg-white"
                 style={{ width: '350px' }}
                 onSubmit={handleSubmit}
             >
-                <h3 className="mb-3 text-center">Login</h3>
+                <h3 className="mb-3 text-center">Register</h3>
 
                 {error && <div className="alert alert-danger">{error}</div>}
 
@@ -113,18 +110,11 @@ const LoginForm = () => {
                     className="btn btn-primary w-100"
                     disabled={loading}
                 >
-                    {loading ? 'Logging in...' : 'Login'}
+                    {loading ? 'Loading...' : 'Register'}
                 </button>
-
-                <div className="text-center mt-3">
-                    <small>
-                        Don’t have an account?{' '}
-                        <a href="/register">Register</a>
-                    </small>
-                </div>
             </form>
         </div>
     );
 };
 
-export default LoginForm;
+export default LocalLoginForm;

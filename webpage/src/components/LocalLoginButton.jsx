@@ -1,42 +1,71 @@
-import { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import LoginForm from '../forms/LoginForm';
+import { useState } from 'react';
 
-const LocalLoginButton = () => {
-    const [show, setShow] = useState(false);
+import LocalLoginForm from "../forms/LocalLoginForm.jsx";
 
-    useEffect(() => {
-        const close = () => setShow(false);
-        window.addEventListener('close-login-modal', close);
-        return () => window.removeEventListener('close-login-modal', close);
-    }, []);
+
+const ToggleLoginButton = () => {
+    const [showLogin, setShowLogin] = useState(false);
+
+    const handleClick = () => {
+        setShowLogin(true);
+    };
+
+    const handleClose = () => {
+        setShowLogin(false);
+    };
 
     return (
         <>
-            {/* Sleek login button */}
-            <Button
-                variant="primary"
-                className="px-4 py-2 rounded-pill fw-semibold shadow-sm"
-                onClick={() => setShow(true)}
+            <button
+                onClick={handleClick}
+                className="btn btn-gradient px-4 py-2 text-white fw-bold"
+                style={{
+                    background: 'linear-gradient(90deg, #6a11cb, #2575fc)',
+                    border: 'none',
+                    borderRadius: '50px',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+                }}
             >
                 Login
-            </Button>
+            </button>
 
-            <Modal
-                show={show}
-                onHide={() => setShow(false)}
-                centered
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Welcome Back</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <LoginForm />
-                </Modal.Body>
-            </Modal>
+            {showLogin && (
+                <div
+                    className="modal fade show d-block"
+                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+                    onClick={handleClose} // close modal when clicking outside
+                >
+                    <div
+                        className="modal-dialog modal-dialog-centered"
+                        onClick={(e) => e.stopPropagation()} // prevent close on modal content click
+                    >
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Login</h5>
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    onClick={handleClose}
+                                ></button>
+                            </div>
+                            <div className="modal-body">
+                                <LocalLoginForm />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
 
-export default LocalLoginButton;
+export default ToggleLoginButton;
