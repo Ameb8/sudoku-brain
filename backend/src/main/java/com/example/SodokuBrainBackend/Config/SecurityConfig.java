@@ -10,17 +10,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
+import com.example.SodokuBrainBackend.Users.LocalUserDetailsService;
+
 
 @Configuration
 public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final LocalUserDetailsService localUserDetailsService;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+                          LocalUserDetailsService localUserDetailsService) {
         this.customOAuth2UserService = customOAuth2UserService;
+        this.localUserDetailsService = localUserDetailsService;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,6 +50,24 @@ public class SecurityConfig {
         return source;
     }
 
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(
+            LocalUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder
+    ) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
     /**
      * Handles login authentication for users
      * @param http Http Authentication request
@@ -53,6 +80,9 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .csrf().disable()
+                .authenticationProvider(authenticationProvider(
+                    localUserDetailsService, passwordEncoder()
+                ))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/secured/**").authenticated()
                         .anyRequest().permitAll()

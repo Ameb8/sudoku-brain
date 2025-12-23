@@ -27,8 +27,9 @@
   margin: 0 auto;
   padding-top: 60px;
   text-align: center;
+  min-height: 100vh;
   background: var(--bg-gradient);
-  background: var(--text-color);
+  color: var(--text-color);
 }
 
 .logo {
